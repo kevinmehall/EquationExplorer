@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <title>Implicit function grapher</title>
+    <script src='tokens.js'></script>
+	<script src='tdop_math.js'></script>
+	<script src='graph.js'></script>
+    <script type="text/javascript">
+    	gp={
+    		aa:64.0,
+    		width:600,
+    		height:600,
+    		xmin:-10,
+    		xmax:10,
+    		ymin:-10,
+    		ymax:10,
+    	}
+    	
+		function draw(fn){
+			var startTime=new Date()
+			var canvas = document.getElementById('tutorial');
+        	if (canvas.getContext){
+          		var ctx = canvas.getContext('2d');
+          		ctx.clearRect(0,0,gp.width,gp.height)
+          		drawGrid(ctx, gp)
+          		
+          		if (fn=='moose'){
+          			var moose=new Image()
+          			moose.src='http://static.open.salon.com/files/moose1228504902.jpg'
+          			
+          			ctx.drawImage(moose, 100, 100, 400, 400);
+          			return
+          		}
+          		
+				var f=compile_to_js_inequality(fn)
+          		var g=graph(ctx, gp, f, 255, 0, 0, 4)
+				ctx.drawImage(g, 0, 0, gp.width, gp.height);
+       		 }
+       		 var time= new Date()-startTime
+       		 return time;
+      }
+      
+      function dograph(){
+      	var err=document.getElementById('output')
+      	var v=document.getElementById('equation').value
+      	var time;
+      	try{
+      		time=draw(v)
+      	}catch(e){
+      		//if(console) console.error(e)
+      		err.innerHTML=e.message
+      		return
+      	}
+      	window.location.hash=encodeURIComponent(v)
+      	err.innerHTML='Took '+time/1000.0+'s'
+      }
+      
+      function setup(){
+      	var v='x^2+y^2=9'
+      	if (window.location.hash)
+      		v=decodeURIComponent(window.location.hash.slice(1))
+      	draw(v);
+      	document.getElementById('equation').value=v;
+      	
+      }
+    </script>
+    <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+  </head>
+  <body onload="setup();">
+    <canvas id="tutorial" width="600" height="600"></canvas>
+    <form onsubmit='dograph(); return false' action='#'>
+    <input id='equation' type='text' value='' />
+    <button onclick='dograph()'>Graph!</button>
+    </form>
+    <div id='output'></div>
+  </body>
+</html>
+
