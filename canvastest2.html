@@ -1,0 +1,95 @@
+<html>
+  <head>
+    <title>Implicit function grapher</title>
+    <script type="text/javascript">
+    	var osa=1.0;
+    	var width=600;
+    	var height=600;
+    	var xmin=-10;
+    	var xmax=10;
+    	var ymin=-10;
+    	var ymax=10;
+    	var xscale=(xmax-xmin)/(width*osa);
+    	var yscale=(ymax-ymin)/(height*osa);
+    	
+		function f(x, y){
+			return y<Math.cos(x)
+		}
+		
+		function f2(x, y){
+			return y<x*x
+		}
+    	
+    	function p2gx(x){
+    		return x*xscale+xmin
+    	}
+    	function p2gy(y){
+    		return -(y*yscale+ymin)
+    	}
+    	
+    	function graph(ctx, f, r, g, b){
+    		var canvas=document.createElement('canvas');
+    		canvas.width=width*osa;
+    		canvas.height=height*osa;
+    		var ctx = canvas.getContext('2d');
+    		var imgd = ctx.createImageData(width*osa,height*osa);
+			var pix = imgd.data;
+			var stride = width*osa*4;
+			
+			var x=0; var y=0; var i=0;
+			while (i<pix.length){
+				pix[i  ] = r;
+				pix[i+1] = g;
+				pix[i+2] = b;
+			
+				if (
+				   f(p2gx(x-0.5), p2gy(y)) != f(p2gx(x+0.5), p2gy(y))
+				|| f(p2gx(x), p2gy(y-0.5)) != f(p2gx(x), p2gy(y+0.5))
+				){
+					pix[i+3] = 255;
+					pix[i+7] = 255;
+					pix[i-1] = 255;
+					if (y<width){
+						pix[i+stride+3] = 255;
+						pix[i+stride+7] = 255;
+						pix[i+stride-1] = 255;
+					}
+					if (y>0){
+						 pix[i-stride+3] = 255;
+						 pix[i-stride-1] = 255;
+						 pix[i-stride+7] = 255;
+					}
+				}
+				
+				i+=4;
+				x+=1
+				if (x==width*osa){ x=0; y+=1 };
+			}
+			ctx.putImageData(imgd, 0,0);
+			return canvas;
+    	}
+    	
+		function draw(){
+			var startTime=new Date()
+			var canvas = document.getElementById('tutorial');
+        	if (canvas.getContext){
+          		var ctx = canvas.getContext('2d');
+          		var g=graph(ctx, f, 255, 0, 0)
+				ctx.drawImage(g, 0, 0, width, height);
+				var g=graph(ctx, f2, 0, 0, 255)
+				ctx.drawImage(g, 0, 0, width, height);
+          
+       		 }
+       		 var time= new Date()-startTime
+       		 console.log(time);
+      }
+    </script>
+    <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+  </head>
+  <body onload="draw();">
+    <canvas id="tutorial" width="600" height="600"></canvas>
+  </body>
+</html>
+
