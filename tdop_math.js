@@ -133,7 +133,7 @@ function make_parse(){
 
 	
     return function (source) {
-        tokens = source.tokens('=<>/+-*%^()xy');
+        tokens = source.tokens('=<>/+-*%^()xym');
         token_nr = 0;
         advance();
         var s = expression(0);
@@ -192,16 +192,18 @@ constants = {
 
 parse = make_parse()
 
-function compile_to_js_inequality(equation){
+function compile_to_js_inequality(equation, m){
+	c=Object.create(constants)
+	c.m=m
 	var parts=equation.split('=')
 	if (parts.length==1) 
 		eval('function f(x, y){ return (y<'+
-		to_js(parse(parts[0]), ['x', 'y'], constants, fns)
+		to_js(parse(parts[0]), ['x', 'y'], c, fns)
 		+')}')
 	else eval('function f(x, y){ return ('+
-		to_js(parse(parts[0]), ['x', 'y'], constants, fns)
+		to_js(parse(parts[0]), ['x', 'y'], c, fns)
 		+'<'+
-		to_js(parse(parts[1]), ['x', 'y'], constants, fns)
+		to_js(parse(parts[1]), ['x', 'y'], c, fns)
 		+')}')
 	return f
 }

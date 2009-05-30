@@ -96,6 +96,18 @@ body{
     		color: red;
     		font-size: small;
     	}
+    	a.exp-up{
+    		background: url(exp-up.png) no-repeat center center;
+    	}
+    	a.exp-down{
+    		background: url(exp-down.png) no-repeat center center;
+    	}
+    	input.exp-show{
+    		width: 20px;
+    		border: none;
+    		text-align:center;
+    	}
+    	
     	#add{
     		display:block;
     		border:none;
@@ -165,9 +177,30 @@ body{
     		this.visibilitybtn=$("<a href='#' name='Show/Hide' class='btn visibility'>&nbsp;</a>").appendTo($(this.tile))
     		this.input=$(" <input class='equation' id='equation' type='text' value='' autocomplete='off' />").appendTo($(this.tile))
     		this.removebtn=$("<a href='#' name='Remove' class='btn remove'>&nbsp;</a>").appendTo($(this.tile))
+    		
+    		this.explorer=$("<div class='explorer'></div>").hide().appendTo($(this.tile))
+    		this.exp_down=$("<a href='#' name='Decrease m' class='btn exp-down'>&nbsp;</a>").appendTo(this.explorer)
+    			.click(function(){
+    				e.m--;
+    				e.exp_show.val(e.m)
+    				e.render()
+    				redraw()
+    			})
+    		$(this.explorer).append(" m=")
+    		this.exp_show=$("<input type='text' class='exp-show' value='1'/>").appendTo(this.explorer)
+    		this.exp_up=$("<a href='#' name='Increase m' class='btn exp-up'>&nbsp;</a>").appendTo(this.explorer)
+    			.click(function(){
+    				e.m++;
+    				e.exp_show.val(e.m)
+    				e.render()
+    				redraw()
+    			})
+    		
+    		
     		this.color=getColor()
     		this.image=null
     		this.visible=true
+    		this.m=1
     		
     		$(e.removebtn).click(function(){e.pre_remove(); return false})
     		
@@ -185,7 +218,7 @@ body{
     			var fade=$(this.tile).clone()
     			var cancel=false;
     			$(this.tile).hide().after(fade)
-    			$(fade).empty().addClass('removing').fadeOut(10000, function(){
+    			$(fade).empty().addClass('removing').fadeOut(6000, function(){
     				if (cancel) return
     				$(fade).remove()
     				e.remove()
@@ -218,9 +251,15 @@ body{
     		this.render=function(){
     			this.image=null;
     			$(e.tile).find('.error').remove()
-    			if (this.visible){
+    			var v=this.input.val()
+    			if (this.visible && v.length){
     				try{
-	    				var f=compile_to_js_inequality(this.input.val())
+	    				var f=compile_to_js_inequality(v, this.m)
+	    				if (v.indexOf('m')!=-1){
+	    					$(this.explorer).show()
+	    				}else{
+	    					$(this.explorer).hide()
+	    				}
 	    			}catch(err){
 	    				$("<div class='error'></div>").text(err.message).appendTo(e.tile)
 	    				$(e.tile).removeClass('active')
@@ -255,7 +294,7 @@ body{
     		canvas = document.getElementById('canvas');
     		ctx = canvas.getContext('2d');
     		
-    		var v='x^2+y^2=9'
+    		var v='x^2+y^2=m^2'
 	      	if (window.location.hash)
 	      		v=decodeURIComponent(window.location.hash.slice(1))
 	      	
