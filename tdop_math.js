@@ -5,10 +5,10 @@ function make_parse(){
 
 	var original_symbol = {
 	    nud: function () {
-	        this.error("Undefined.");
+	        error("Undefined.", this);
 	    },
 	    led: function (left) {
-	        this.error("Missing operator.");
+	        error("Missing operator.", this);
 	    }
 	};
 
@@ -48,7 +48,7 @@ function make_parse(){
 	var advance = function (id) {
 	    var a, o, t, v;
 	    if (id && token.id !== id) {
-	        token.error("Expected '" + id + "'.");
+	        error("Expected '" + id + "'.", token);
 	    }
 	    if (token_nr >= tokens.length) {
 	        token = symbol_table["(end)"];
@@ -63,13 +63,13 @@ function make_parse(){
 	    } else if (a === "operator") {
 	        o = symbol_table[v];
 	        if (!o) {
-	            t.error("Unknown operator.");
+	            error("Unknown operator.", t);
 	        }
 	    } else if (a ===  "number") {
 	        a = "literal";
 	        o = symbol_table["(literal)"];
 	    } else {
-	        t.error("Unexpected token.");
+	        error("Unexpected token.", t);
 	    }
 	    token = Object.create(o);
 	    token.value = v;
@@ -157,7 +157,7 @@ function to_js(exp, bound_vars, free_vars, fns){
 		if (v.arity=='name'){
 			if (bound_vars.indexOf(v.value)!=-1) return v.value
 			if (free_vars[v.value]!==undefined) return free_vars[v.value]
-			else v.error('Undefined variable or constant')
+			else error('Undefined variable or constant', v)
 		}
 		else if (v.arity=='binary'){
 			if (v.value=='^') 
@@ -167,7 +167,7 @@ function to_js(exp, bound_vars, free_vars, fns){
 		}else if (v.arity=='function')
 			if (fns[v.value])
 				return fns[v.value]+'('+' '+exp_to_js(v.arg)+')';
-			else v.error('Undefined function: '+v.value)
+			else error('Undefined function: '+v.value, v)
 	}
 	return exp_to_js(exp)
 }

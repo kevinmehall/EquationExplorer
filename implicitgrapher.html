@@ -1,10 +1,135 @@
 <html>
   <head>
     <title>Implicit function grapher</title>
+    <style>
+    	html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+body{
+	padding-top: 10px;
+}
+    	#wrap{
+    		position:relative;
+    		width:900px;
+    		margin: auto auto;
+    		-moz-border-radius: 10px;
+    		-webkit-border-radius: 10px;
+    		background: url(bg.png) repeat-y;
+    		border: 7px solid black;
+    	}
+    	#canvas{
+    		background:white;
+    		border:none;
+    		z-index: 10;
+    	}
+    	#side{
+    		position:absolute; 
+    		left: 590px;
+    		top:0;
+    		height: 600px;
+    		width: 310px;
+    		z-index: 1;
+    	}
+    	h2{
+    		font-size: 12px;
+    		font-weight: bold;
+    		font-variant: small-caps;
+    	}
+    	.equation-tile{
+    		margin: 6px 6px 6px 15px;
+    		border-left: 15px solid red;
+    		background-color: white;
+    		-moz-border-radius: 10px;
+    		padding: 5px;
+    		position:relative;
+    		
+    	}
+    	input.equation{
+    		width: 235px;
+    		font-size: 18px;
+    		margin-left: 3px;
+    		border: none;
+    	}
+    	.equation-tile a.btn{
+    		width: 24px;
+    		height: 24px;
+    		border: none;
+    		display: inline-block;
+    		vertical-align: top;
+    		margin:0;
+    		text-decoration:none;
+    	}
+    	.visibility{
+    		background: url(vis.png) no-repeat center center;
+    	}
+    	.invisible .visibility{
+    		background: url(vis-hidden.png) no-repeat center center;
+    	}
+    	.active .visibility{
+    		background: url(vis-spinner.gif) no-repeat center center;
+    	}
+    	a.remove{
+    		background: url(remove.png) no-repeat center center;
+    		width: 18px;
+    		height:18px;
+    		position:absolute;
+    		top: -9px;
+    		right: -9px;
+    	}
+    	.error{
+    		color: red;
+    		font-size: small;
+    	}
+    	#add{
+    		display:block;
+    		border:none;
+    		text-align: center;
+    		font-size: 12px;
+    		color:black;
+    		text-decoration:none;
+    	}
+    	
+    	#window{
+    		position: absolute;
+    		bottom: 5px;
+    		border-left: none;
+    	}
+    	#window form{
+    		display: block;
+    		width: 280px;
+    	}
+    	#window input{
+    		width: 45px;
+    	}
+    </style>
+    <script src='jquery.js'></script>
     <script src='tokens.js'></script>
 	<script src='tdop_math.js'></script>
 	<script src='graph.js'></script>
     <script type="text/javascript">
+    	Array.prototype.remove = function(elem) {  
+			var index = this.indexOf(elem);    
+			if (index !== -1) {this.splice(index, 1);}
+		}
+		
+		ctx=null
+    
     	gp={
     		aa:64.0,
     		width:600,
@@ -14,66 +139,164 @@
     		ymin:-10,
     		ymax:10,
     	}
+    	equations=[]
     	
-		function draw(fn){
-			var startTime=new Date()
-			var canvas = document.getElementById('tutorial');
-        	if (canvas.getContext){
-          		var ctx = canvas.getContext('2d');
-          		ctx.clearRect(0,0,gp.width,gp.height)
-          		drawGrid(ctx, gp)
-          		
-          		if (fn=='moose'){
-          			var moose=new Image()
-          			moose.src='http://static.open.salon.com/files/moose1228504902.jpg'
-          			
-          			ctx.drawImage(moose, 100, 100, 400, 400);
-          			return
-          		}
-          		
-				var f=compile_to_js_inequality(fn)
-          		var g=graph(ctx, gp, f, 255, 0, 0, 4)
-				ctx.drawImage(g, 0, 0, gp.width, gp.height);
-       		 }
-       		 var time= new Date()-startTime
-       		 return time;
-      }
+    	colors=[
+    		[255, 0, 255],
+    		[255, 0, 0],
+    		[255, 128, 0],
+    		[200, 200, 0],
+    		[0, 255, 0],
+    		[0, 255, 255],
+    		[0, 0, 255],
+    		[128, 0, 255],
+    	]
+    	colorIndex=0;
+    	function getColor(){
+    		colorIndex=(colorIndex+1)%colors.length
+    		return colors[colorIndex]
+    	}
+    	tileid=0
+    	
+    	function Equation(eqn){
+    		var e=this;
+    		this.tileid="tile-"+tileid++
+    		this.tile=$("<div id='"+this.tileid+"' class='equation-tile'></div>")
+    		this.visibilitybtn=$("<a href='#' name='Show/Hide' class='btn visibility'>&nbsp;</a>").appendTo($(this.tile))
+    		this.input=$(" <input class='equation' id='equation' type='text' value='' autocomplete='off' />").appendTo($(this.tile))
+    		this.removebtn=$("<a href='#' name='Remove' class='btn remove'>&nbsp;</a>").appendTo($(this.tile))
+    		this.color=getColor()
+    		this.image=null
+    		this.visible=true
+    		
+    		$(e.removebtn).click(function(){e.pre_remove(); return false})
+    		
+    		$(e.tile).css('border-color', 'rgb('+this.color[0]+','+this.color[1]+','+this.color[2]+')' )
+    		
+    		$(e.visibilitybtn).click(function(){
+    			e.visible=!e.visible
+    			if (e.visible) $(e.tile).removeClass('invisible')
+    			else $(e.tile).addClass('invisible')
+    			redraw()
+    			return false
+    		})
+    		
+    		this.pre_remove=function(){
+    			var fade=$(this.tile).clone()
+    			var cancel=false;
+    			$(this.tile).hide().after(fade)
+    			$(fade).empty().addClass('removing').fadeOut(10000, function(){
+    				if (cancel) return
+    				$(fade).remove()
+    				e.remove()
+    			})
+    			$("<a href='#'>Undo Remove</a>").appendTo($(fade)).click(function(){
+    				cancel=true;
+    				equations.push(e)
+    				$(fade).remove()
+    				$(e.tile).show()
+    				redraw()
+    				return false;
+    			})
+    			equations.remove(this)
+    			redraw()
+    		}
+    		
+    		this.remove=function(){
+    			$(this.tile).remove()
+    			this.e=this.tile=this.visibilitybtn=this.input=this.removebtn=null;
+    			equations.remove(this)
+    			if (equations.length<8) $('#add').show()
+    		}
+    		
+    		$(e.input).keypress(function(){
+    			if (e.timer) clearTimeout(e.timer)
+    			e.timer=setTimeout(function(){e.render(); redraw()}, 500)
+    			$(e.tile).addClass('active')
+    		})
+    		
+    		this.render=function(){
+    			this.image=null;
+    			$(e.tile).find('.error').remove()
+    			if (this.visible){
+    				try{
+	    				var f=compile_to_js_inequality(this.input.val())
+	    			}catch(err){
+	    				$("<div class='error'></div>").text(err.message).appendTo(e.tile)
+	    				$(e.tile).removeClass('active')
+	    				return
+	    			}
+	          		this.image=graph(ctx, gp, f,this.color[0], this.color[1], this.color[2], 4)
+	          	}
+          		$(e.tile).removeClass('active')
+    		}
+    		
+    		this.isVisible=function(){
+    			return this.visible && this.image
+    		}
+    		
+    		if (eqn){ this.input.val(eqn); this.render()}
+    	}
+    	
+    	function addEquation(eqn){
+    		var e=new Equation(eqn);
+    		equations.push(e);
+    		$(e.tile).hide();
+    		$('#add').before(e.tile);
+    		$(e.tile).fadeIn('slow');
+    		if (equations.length>=8) $('#add').hide()
+    		return false;
+    		
+    	}
+    	
+    	$(function(){
+    		$('#add').click(function(){addEquation()});
+    		
+    		canvas = document.getElementById('canvas');
+    		ctx = canvas.getContext('2d');
+    		
+    		var v='x^2+y^2=9'
+	      	if (window.location.hash)
+	      		v=decodeURIComponent(window.location.hash.slice(1))
+	      	
+	      	addEquation(v);
+	      	redraw();
+    	})
+    	
+    	function redraw(){
+          	ctx.clearRect(0,0,gp.width,gp.height)
+          	drawGrid(ctx, gp)
+          	
+          	for (var i=0; i<equations.length; i++){
+          		if (equations[i].isVisible()) ctx.drawImage(equations[i].image, 0, 0, gp.width, gp.height)
+          	}
+    	}
       
-      function dograph(){
-      	var err=document.getElementById('output')
-      	var v=document.getElementById('equation').value
-      	var time;
-      	try{
-      		time=draw(v)
-      	}catch(e){
-      		//if(console) console.error(e)
-      		err.innerHTML=e.message
-      		return
-      	}
-      	window.location.hash=encodeURIComponent(v)
-      	err.innerHTML='Took '+time/1000.0+'s'
-      }
-      
-      function setup(){
-      	var v='x^2+y^2=9'
-      	if (window.location.hash)
-      		v=decodeURIComponent(window.location.hash.slice(1))
-      	draw(v);
-      	document.getElementById('equation').value=v;
-      	
-      }
     </script>
     <style type="text/css">
       canvas { border: 1px solid black; }
     </style>
   </head>
-  <body onload="setup();">
-    <canvas id="tutorial" width="600" height="600"></canvas>
-    <form onsubmit='dograph(); return false' action='#'>
-    <input id='equation' type='text' value='' />
-    <button onclick='dograph()'>Graph!</button>
-    </form>
-    <div id='output'></div>
+  <body>
+  <div id='wrap'>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    
+    
+    <div id='side'>
+    	
+    	<a href='#' class='equation-tile add' id='add'>Add Equation</a>
+    	
+    	<div id='window' class='equation-tile'>
+    		<h2>Window Settings</h2>
+    		<form>
+    			<div><label>xmin = </label><input id='xmin' type='text' />
+    			<label>xmax = </label><input id='xmax' type='text' /></div>
+    			<div><label>ymin = </label><input id='ymin' type='text' />
+    			<label>xmax = </label><input id='ymax' type='text' /></div>
+    		</form>
+    	</div>
+  </div>
+  </div>
   </body>
 </html>
 

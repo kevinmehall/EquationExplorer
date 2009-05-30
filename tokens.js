@@ -17,8 +17,7 @@ if (typeof Object.create !== 'function') {
     };
 }
 
-Object.prototype.error = function (message, t) {
-    t = t || this;
+error = function (message, t) {
     t.name = "SyntaxError";
     t.message = message;
     throw t;
@@ -119,7 +118,7 @@ String.prototype.tokens = function (spliton) {
                     str += c;
                 }
                 if (c < '0' || c > '9') {
-                    make('number', str).error("Bad exponent");
+                    error("Bad exponent", make('number', str));
                 }
                 do {
                     i += 1;
@@ -135,7 +134,7 @@ String.prototype.tokens = function (spliton) {
             if (isFinite(n)) {
                 result.push(make('number', n));
             } else {
-                make('number', str).error("Bad number");
+                error("Bad number",  make('number', str));
             }
             
         // name.
