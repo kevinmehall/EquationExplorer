@@ -22,7 +22,28 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }
 
 body{
-	padding-top: 10px;
+	padding-top: 20px;
+	background: url(behind2.jpeg);
+	font-family: sans-serif;
+	
+
+}
+#below{
+	width: 900px;
+	margin: auto auto;
+	text-align: right;
+	font-variant: small-caps;
+	color: #999c89;
+	font-size: small;
+}
+#below a{
+	color: inherit;
+	text-decoration:none;
+}
+h1{
+	font-size: 63px;
+	font-weight:bold;
+	
 }
     	#wrap{
     		position:relative;
@@ -31,7 +52,7 @@ body{
     		-moz-border-radius: 10px;
     		-webkit-border-radius: 10px;
     		background: url(bg.png) repeat-y;
-    		border: 7px solid black;
+    		border: 7px solid #46473f;
     	}
     	#canvas{
     		background:white;
@@ -56,6 +77,7 @@ body{
     		border-left: 15px solid red;
     		background-color: white;
     		-moz-border-radius: 10px;
+    		-webkit-border-radius: 10px;
     		padding: 5px;
     		position:relative;
     		
@@ -157,7 +179,7 @@ body{
     		[255, 0, 255],
     		[255, 0, 0],
     		[255, 128, 0],
-    		[200, 200, 0],
+    		[220, 220, 0],
     		[0, 255, 0],
     		[0, 255, 255],
     		[0, 0, 255],
@@ -218,9 +240,11 @@ body{
     			var fade=$(this.tile).clone()
     			var cancel=false;
     			$(this.tile).hide().after(fade)
-    			$(fade).empty().addClass('removing').fadeOut(6000, function(){
+    			$(fade).empty().addClass('removing').fadeTo(6000, 0.01, function(){
     				if (cancel) return
-    				$(fade).remove()
+    				$(fade).hide(500, function(){
+    					$(fade).remove()
+    				})
     				e.remove()
     			})
     			$("<a href='#'>Undo Remove</a>").appendTo($(fade)).click(function(){
@@ -335,6 +359,11 @@ body{
     		</form>
     	</div>
   </div>
+  </div>
+  
+  <div id='below'>
+  	<h1>EquationExplorer</h1>
+  	<span id='copyright'>&copy;2009 <a href='http://kevinmehall.net'>Kevin Mehall</a></span>
   </div>
   </body>
 </html>
