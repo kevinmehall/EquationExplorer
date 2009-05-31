@@ -1,0 +1,183 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+
+body{
+	padding-top: 20px;
+	background: url(behind2.jpeg);
+	font-family: sans-serif;
+	
+
+}
+
+#below{
+	width: 900px;
+	margin: auto auto;
+	text-align: right;
+	font-variant: small-caps;
+	color: #999c89;
+	font-size: small;
+}
+#below a{
+	color: inherit;
+	text-decoration:none;
+}
+
+h1{
+	font-size: 63px;
+	font-weight:bold;
+}
+
+.page{
+	position:relative;
+	width:900px;
+	margin: auto auto;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: url(trans70.png);
+	border: 7px solid #46473f;
+}
+
+#wrap{
+	background: url(bg.png) repeat-y;
+	height: 600px;
+}
+
+#canvas{
+	background:white;
+	border:none;
+	z-index: 10;
+}
+
+#side{
+	position:absolute; 
+	left: 590px;
+	top:0;
+	height: 600px;
+	width: 310px;
+	z-index: 1;
+}
+
+#window h2{
+	font-size: 12px;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+
+.equation-tile{
+	margin: 6px 6px 6px 15px;
+	border-left: 15px solid red;
+	background-color: white;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	padding: 5px;
+	position:relative;
+}
+
+input.equation{
+	width: 235px;
+	font-size: 18px;
+	margin-left: 3px;
+	border: none;
+}
+
+.equation-tile a.btn{
+	width: 24px;
+	height: 24px;
+	border: none;
+	display: inline-block;
+	vertical-align: top;
+	margin:0;
+	text-decoration:none;
+}
+
+.visibility{
+	background: url(vis.png) no-repeat center center;
+}
+
+.invisible .visibility{
+	background: url(vis-hidden.png) no-repeat center center;
+}
+
+.active .visibility{
+	background: url(vis-spinner.gif) no-repeat center center;
+}
+
+a.remove{
+	background: url(remove.png) no-repeat center center;
+	width: 18px;
+	height:18px;
+	position:absolute;
+	top: -9px;
+	right: -9px;
+}
+
+.error{
+	color: red;
+	font-size: small;
+}
+
+a.exp-up{
+	background: url(exp-up.png) no-repeat center center;
+}
+
+a.exp-down{
+	background: url(exp-down.png) no-repeat center center;
+}
+
+input.exp-show{
+	width: 20px;
+	border: none;
+	text-align:center;
+}
+
+#add{
+	display:block;
+	border:none;
+	text-align: center;
+	font-size: 12px;
+	color:black;
+	text-decoration:none;
+}
+
+#window{
+	position: absolute;
+	bottom: 0px;
+	border-left: none;
+	width: 280px;
+}
+
+#window input{
+	width: 40px;
+}
+
+#window label{
+	width: 70px;
+	display: inline-block;
+}
+
+#browsererror{
+	padding: 30px;
+}
+
+#browsererror h2{
+	font-size: 30px;
+	font-variant: small-caps;
+}
