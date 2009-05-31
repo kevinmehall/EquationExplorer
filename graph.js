@@ -102,14 +102,16 @@ function graph(ctx, gp, f, r, g, b, lw){
 
 function drawGrid(ctx, gp){
 	var xpixstep = (gp.xmax-gp.xmin)/(gp.width)
-	var ypixstep = -(gp.ymax-gp.ymin)/(gp.height)
+	var ypixstep = (gp.ymax-gp.ymin)/(gp.height)
 	
+	var xgrid=Math.pow(10, Math.round(Math.log(gp.xmax-gp.xmin)/Math.LN10)-1)
+	var ygrid=Math.pow(10, Math.round(Math.log(gp.ymax-gp.ymin)/Math.LN10)-1)
 	
 	function x2px(x){ return (x-gp.xmin)/xpixstep }
-	function y2py(y){ return (y+gp.ymin)/ypixstep }
+	function y2py(y){ return (gp.ymax-y)/ypixstep }
 	ctx.strokeStyle='rgba(0,0,255,0.3)'
 	
-	for (var x=Math.round(gp.xmin); x<gp.xmax; x++){
+	for (var x=Math.round(gp.xmin/xgrid)*xgrid; x<gp.xmax; x+=xgrid){
 		if (x==0) ctx.lineWidth=4
 		else ctx.lineWidth=1
 		ctx.beginPath()
@@ -118,7 +120,7 @@ function drawGrid(ctx, gp){
 		ctx.stroke()
 	}
 	
-	for (var y=Math.round(gp.ymin); y<gp.ymax; y++){
+	for (var y=Math.round(gp.ymin/ygrid)*ygrid; y<gp.ymax; y+=ygrid){
 		if (y==0) ctx.lineWidth=4
 		else ctx.lineWidth=1
 		ctx.beginPath()

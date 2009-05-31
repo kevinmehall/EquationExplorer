@@ -148,11 +148,16 @@ h1{
     	
     	#window{
     		position: absolute;
-    		bottom: 5px;
+    		bottom: 0px;
     		border-left: none;
+    		width: 280px;
     	}
     	#window input{
-    		width: 45px;
+    		width: 40px;
+    	}
+    	#window label{
+    		width: 70px;
+    		display: inline-block;
     	}
     	#browsererror{
     		padding: 30px;
@@ -170,6 +175,13 @@ h1{
     	Array.prototype.remove = function(elem) {  
 			var index = this.indexOf(elem);    
 			if (index !== -1) {this.splice(index, 1);}
+		}
+		
+		function bindInputToAttr(input, o, attr, callback){
+			$(input).change(function(){
+				o[attr]=parseFloat($(input).val(), 10)
+				callback()
+			})
 		}
 		
 		ctx=null
@@ -323,8 +335,6 @@ h1{
     	}
     	
     	$(function(){
-    		$('#add').click(function(){addEquation(); return false});
-    		
     		canvas = document.getElementById('canvas');
     		ctx = canvas.getContext('2d');
     		
@@ -332,6 +342,12 @@ h1{
     			$('#wrap').show()
     			$('#browsererror').hide()
     		}
+    		
+    		$('#add').click(function(){addEquation(); return false});
+    		bindInputToAttr($('#xmin'), gp, 'xmin', redrawAll)
+    		bindInputToAttr($('#xmax'), gp, 'xmax', redrawAll)
+    		bindInputToAttr($('#ymin'), gp, 'ymin', redrawAll)
+    		bindInputToAttr($('#ymax'), gp, 'ymax', redrawAll)
     		
     		var v='x^2+y^2=m^2'
 	      	if (window.location.hash)
@@ -348,6 +364,13 @@ h1{
           	for (var i=0; i<equations.length; i++){
           		if (equations[i].isVisible()) ctx.drawImage(equations[i].image, 0, 0, gp.width, gp.height)
           	}
+    	}
+    	
+    	function redrawAll(){
+    		for (var i=0; i<equations.length; i++){
+          		equations[i].render()
+          	}
+          	redraw()
     	}
       
     </script>
@@ -375,10 +398,10 @@ h1{
     	
     	<div id='window' class='equation-tile'>
     		<h2>Window Settings</h2>
-    			<div><label>xmin = </label><input id='xmin' type='text' />
-    			<label>xmax = </label><input id='xmax' type='text' /></div>
-    			<div><label>ymin = </label><input id='ymin' type='text' />
-    			<label>xmax = </label><input id='ymax' type='text' /></div>
+    			<div><label>xmin = </label><input id='xmin' type='text' value='-10' />
+    			<label>xmax = </label><input id='xmax' type='text' value='10' /></div>
+    			<div><label>ymin = </label><input id='ymin' type='text' value='-10' />
+    			<label>ymax = </label><input id='ymax' type='text' value='10' /></div>
     	</div>
   </div>
   </div>
