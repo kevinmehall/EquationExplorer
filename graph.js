@@ -11,7 +11,14 @@ function graph(ctx, gp, f, r, g, b, lw){
 	canvas.width=width;
 	canvas.height=height;
 	var ctx = canvas.getContext('2d');
-	var imgd = ctx.createImageData(width,height);
+	if (ctx.createImageData) {
+    	imgd = ctx.createImageData(width, height);
+	} else if (ctx.getImageData) {
+		imgd = ctx.getImageData(0, 0, width, height);
+	} else {
+		alert("Browser not supported!")
+		return;
+	}
 	var pix = imgd.data;
 	var stride = width*4;
 	var xpixstep = (xmax-xmin)/(width)

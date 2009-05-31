@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Implicit function grapher</title>
@@ -45,14 +46,19 @@ h1{
 	font-weight:bold;
 	
 }
-    	#wrap{
+    	.page{
     		position:relative;
     		width:900px;
     		margin: auto auto;
     		-moz-border-radius: 10px;
     		-webkit-border-radius: 10px;
-    		background: url(bg.png) repeat-y;
+    		border-radius: 10px;
+    		background: url(trans70.png);
     		border: 7px solid #46473f;
+    	}
+    	#wrap{
+    		background: url(bg.png) repeat-y;
+    		height: 600px;
     	}
     	#canvas{
     		background:white;
@@ -67,7 +73,7 @@ h1{
     		width: 310px;
     		z-index: 1;
     	}
-    	h2{
+    	#window h2{
     		font-size: 12px;
     		font-weight: bold;
     		font-variant: small-caps;
@@ -78,6 +84,7 @@ h1{
     		background-color: white;
     		-moz-border-radius: 10px;
     		-webkit-border-radius: 10px;
+    		border-radius: 10px;
     		padding: 5px;
     		position:relative;
     		
@@ -144,12 +151,15 @@ h1{
     		bottom: 5px;
     		border-left: none;
     	}
-    	#window form{
-    		display: block;
-    		width: 280px;
-    	}
     	#window input{
     		width: 45px;
+    	}
+    	#browsererror{
+    		padding: 30px;
+    	}
+    	#browsererror h2{
+    		font-size: 30px;
+    		font-variant: small-caps;
     	}
     </style>
     <script src='jquery.js'></script>
@@ -313,10 +323,15 @@ h1{
     	}
     	
     	$(function(){
-    		$('#add').click(function(){addEquation()});
+    		$('#add').click(function(){addEquation(); return false});
     		
     		canvas = document.getElementById('canvas');
     		ctx = canvas.getContext('2d');
+    		
+    		if (ctx.createImageData || ctx.getImageData){
+    			$('#wrap').show()
+    			$('#browsererror').hide()
+    		}
     		
     		var v='x^2+y^2=m^2'
 	      	if (window.location.hash)
@@ -341,7 +356,16 @@ h1{
     </style>
   </head>
   <body>
-  <div id='wrap'>
+   <div id='browsererror' class='page'>
+  	<h2>Sorry, your browser is not supported!</h2>
+  	<p><em>Javascript and HTML5 Canvas are required</em></p>
+  	The following browsers are known to work:
+	  	<ul>
+	  	<li><a href='http://getfirefox.com'>Firefox 3.0</a></li>
+	  	<li><a href='http://chrome.google.com'>Google Chrome</a></li>
+	  	</ul>
+  </div>
+  <div id='wrap' class='page' style='display: none'>
     <canvas id="canvas" width="600" height="600"></canvas>
     
     
@@ -351,12 +375,10 @@ h1{
     	
     	<div id='window' class='equation-tile'>
     		<h2>Window Settings</h2>
-    		<form>
     			<div><label>xmin = </label><input id='xmin' type='text' />
     			<label>xmax = </label><input id='xmax' type='text' /></div>
     			<div><label>ymin = </label><input id='ymin' type='text' />
     			<label>xmax = </label><input id='ymax' type='text' /></div>
-    		</form>
     	</div>
   </div>
   </div>

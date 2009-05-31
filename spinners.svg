@@ -127,13 +127,32 @@
        transform="matrix(-0.2408073,-0.2408073,0.2408073,-0.2408073,363.72995,779.57558)" />
     <g
        id="g3626"
-       transform="matrix(0.8543361,0,0,0.8543361,48.060083,107.16342)">
+       transform="matrix(0.5003673,0,0,0.5003673,170.09595,361.49785)"
+       inkscape:export-filename="/home/kevin/Projects/js_math/remove.png"
+       inkscape:export-xdpi="81.695007"
+       inkscape:export-ydpi="81.695007">
+      <path
+         sodipodi:type="arc"
+         style="opacity:1;fill:#f9f9f9;fill-opacity:1;stroke:#f9f9f9;stroke-width:0.00294228;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="path3630"
+         sodipodi:cx="11.462864"
+         sodipodi:cy="78.339073"
+         sodipodi:rx="5.1099515"
+         sodipodi:ry="5.1099515"
+         d="M 16.572815,78.339073 A 5.1099515,5.1099515 0 1 1 6.3529124,78.339073 A 5.1099515,5.1099515 0 1 1 16.572815,78.339073 z"
+         transform="matrix(3.7149376,0,0,3.7149376,300.87875,430.65692)"
+         inkscape:export-xdpi="84.491905"
+         inkscape:export-ydpi="84.491905"
+         inkscape:export-filename="/home/kevin/Projects/js_math/remove.png" />
       <path
          id="path3620"
          d="M 334.93809,712.59743 L 353.03008,730.68942"
-         style="fill:#d40000;fill-rule:evenodd;stroke:#d40000;stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="fill:#d40000;fill-rule:evenodd;stroke:#d40000;stroke-width:3.99706376;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         inkscape:export-filename="/home/kevin/Projects/js_math/remove.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
       <path
-         style="fill:#d40000;fill-rule:evenodd;stroke:#d40000;stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="fill:#d40000;fill-rule:evenodd;stroke:#d40000;stroke-width:3.99706376;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 334.93809,730.68942 L 353.03008,712.59743"
          id="path3624" />
     </g>
