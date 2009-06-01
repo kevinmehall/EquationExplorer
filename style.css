@@ -29,21 +29,42 @@ body{
 	text-align: right;
 	font-variant: small-caps;
 	color: #999c89;
-	font-size: small;
 	position: relative;
 }
 #below a{
 	color: inherit;
 	text-decoration:none;
 }
+#copyright{
+	font-size: small;
+}
 #copyright a:hover{
 	text-decoration:underline;
+}
+#below .links{
+	position: absolute;
+	top:5px;
+	left: 0;
+	color: white;
+	background: #999c89;
+	-moz-border-radius: 10px;
+}
+
+#below .links a{
+	border-left: 1px solid #ccc;
+	padding: 4px;
+	display: inline-block;
+}
+
+#below .links a.first{
+	border:none;
 }
 
 h1{
 	font-size: 63px;
 	font-weight:bold;
 	color: #999c89;
+	font-variant: small-caps;
 }
 
 .page, #wrap{
