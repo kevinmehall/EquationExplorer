@@ -44,12 +44,12 @@ function Equation(eqn){
 	var e=this;
 	this.tileid="tile-"+tileid++
 	this.tile=$("<div id='"+this.tileid+"' class='equation-tile'></div>")
-	this.visibilitybtn=$("<a href='#' name='Show/Hide' class='btn visibility'>&nbsp;</a>").appendTo($(this.tile))
+	this.visibilitybtn=$("<a href='#' title='Show/Hide' class='btn visibility'>&nbsp;</a>").appendTo($(this.tile))
 	this.input=$(" <input class='equation' id='equation' type='text' value='' autocomplete='off' />").appendTo($(this.tile))
-	this.removebtn=$("<a href='#' name='Remove' class='btn remove'>&nbsp;</a>").appendTo($(this.tile))
+	this.removebtn=$("<a href='#' title='Remove' class='btn remove'>&nbsp;</a>").appendTo($(this.tile))
 	
 	this.explorer=$("<div class='explorer'></div>").hide().appendTo($(this.tile))
-	this.exp_down=$("<a href='#' name='Decrease m' class='btn exp-down'>&nbsp;</a>").appendTo(this.explorer)
+	this.exp_down=$("<a href='#' title='Decrease m' class='btn exp-down'>&nbsp;</a>").appendTo(this.explorer)
 		.click(function(){
 			e.m--;
 			e.exp_show.val(e.m)
@@ -59,7 +59,7 @@ function Equation(eqn){
 		})
 	$(this.explorer).append(" m=")
 	this.exp_show=$("<input type='text' class='exp-show' value='1'/>").appendTo(this.explorer)
-	this.exp_up=$("<a href='#' name='Increase m' class='btn exp-up'>&nbsp;</a>").appendTo(this.explorer)
+	this.exp_up=$("<a href='#' title='Increase m' class='btn exp-up'>&nbsp;</a>").appendTo(this.explorer)
 		.click(function(){
 			e.m++;
 			e.exp_show.val(e.m)
@@ -169,7 +169,7 @@ $(function(){
 	if (ctx.createImageData || ctx.getImageData){
 		$('#wrap').show()
 		$('#browsererror').hide()
-	}
+	}else return;
 	
 	$('#add').click(function(){addEquation(); return false});
 	bindInputToAttr($('#xmin'), gp, 'xmin', redrawAll)

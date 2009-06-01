@@ -21,29 +21,32 @@ body{
 	padding-top: 20px;
 	background: url(behind2.jpeg);
 	font-family: sans-serif;
-	
-
 }
 
 #below{
 	width: 900px;
-	margin: auto auto;
+	margin: 0 auto 3em auto;
 	text-align: right;
 	font-variant: small-caps;
 	color: #999c89;
 	font-size: small;
+	position: relative;
 }
 #below a{
 	color: inherit;
 	text-decoration:none;
 }
+#copyright a:hover{
+	text-decoration:underline;
+}
 
 h1{
 	font-size: 63px;
 	font-weight:bold;
+	color: #999c89;
 }
 
-.page{
+.page, #wrap{
 	position:relative;
 	width:900px;
 	margin: auto auto;
@@ -173,11 +176,46 @@ input.exp-show{
 	display: inline-block;
 }
 
-#browsererror{
+.page{
 	padding: 30px;
+	width: 840px;
 }
 
-#browsererror h2{
-	font-size: 30px;
+.page h2, .page h3{
+	margin-top: 0.3em;
 	font-variant: small-caps;
+	color: #999c89;
+	font-weight: bold;
 }
+
+.page h2{
+	font-size: 30px;
+}
+
+.page h3{
+	font-size: 20px;	
+}
+
+.page p{
+	margin-left: 30px;
+	margin-bottom: 0.7em;
+}
+
+.page blockquote,.page ul,.page ol,.page dl {
+	margin:1em;
+}
+.page ol,.page ul,.page dl {
+	margin-left:4em;
+}
+
+#main-content{
+	margin-top: 100px;
+	min-height: 300px;
+}
+
+#main-content h1{
+	position: absolute;
+	left: -15px;
+	top: -85px;
+}
+
