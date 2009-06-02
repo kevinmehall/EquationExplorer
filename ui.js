@@ -72,6 +72,7 @@ function Equation(eqn){
 	this.color=getColor()
 	this.image=null
 	this.visible=true
+	this.error=false
 	this.m=1
 	
 	$(e.removebtn).click(function(){e.pre_remove(); return false})
@@ -125,6 +126,7 @@ function Equation(eqn){
 	this.render=function(){
 		this.image=null;
 		$(e.tile).find('.error').remove()
+		this.error=false
 		var v=this.input.val()
 		if (this.visible && v.length){
 			try{
@@ -137,6 +139,7 @@ function Equation(eqn){
 			}catch(err){
 				$("<div class='error'></div>").text(err.message).appendTo(e.tile)
 				$(e.tile).removeClass('active')
+				this.error=true
 				return
 			}
         		this.image=graph(ctx, gp, f,this.color[0], this.color[1], this.color[2], 4)
@@ -145,10 +148,22 @@ function Equation(eqn){
 	}
 	
 	this.isVisible=function(){
-		return this.visible && this.image
+		return this.visible && !this.error
 	}
 	
-	if (eqn){ this.input.val(eqn); this.render()}
+	this.serialize=function(){
+		s=$(this.input).val()
+		if (s.indexOf('m')!=-1) s+='@'+this.m
+		if (!this.visible) s="!"+s
+		return s
+	}
+	
+	if (eqn){
+		if (eqn[0]=='!'){ this.visible=false; eqn=eqn.slice(1); $(this.tile).addClass('invisible') }
+		var eqn=eqn.split('@')
+		if (eqn.length>1){this.m=parseInt(eqn[1], 10); $(this.exp_show).val(this.m); $(this.explorer).show()}
+		this.input.val(eqn[0])
+	}
 }
 
 function addEquation(eqn){
@@ -159,7 +174,6 @@ function addEquation(eqn){
 	$(e.tile).fadeIn('slow');
 	if (equations.length>=8) $('#add').hide()
 	return false;
-	
 }
 
 $(function(){
@@ -177,26 +191,65 @@ $(function(){
 	bindInputToAttr($('#ymin'), gp, 'ymin', redrawAll)
 	bindInputToAttr($('#ymax'), gp, 'ymax', redrawAll)
 	
-	var v='x^2+y^2=m^2'
-    	if (window.location.hash)
-    		v=decodeURIComponent(window.location.hash.slice(1))
-    	
-    	addEquation(v);
+    if (window.location.hash){
+		loadState(decodeURI(window.location.hash.slice(1)))
+    }else{
+    	addEquation('x^2+y^2=m^2');
     	redraw();
+    }
 })
 
+lastHashState=''
 function redraw(){
-    	ctx.clearRect(0,0,gp.width,gp.height)
-    	drawGrid(ctx, gp)
-    	
-    	for (var i=0; i<equations.length; i++){
-    		if (equations[i].isVisible()) ctx.drawImage(equations[i].image, 0, 0, gp.width, gp.height)
-    	}
+	ctx.clearRect(0,0,gp.width,gp.height)
+	drawGrid(ctx, gp)
+	
+	for (var i=0; i<equations.length; i++){
+		if (equations[i].isVisible()){
+			if (!equations[i].image) equations[i].render()
+			if (equations[i].image) ctx.drawImage(equations[i].image, 0, 0, gp.width, gp.height)
+		}
+	}
+	var v=encodeURI(serializeAll())
+	if (lastHashState.slice(1)!=v){
+		 window.location.hash=v
+	}
+	lastHashState=window.location.hash
 }
 
 function redrawAll(){
 	for (var i=0; i<equations.length; i++){
-    		equations[i].render()
-    	}
-    	redraw()
+    	equations[i].render()
+    }
+    redraw()
+}
+
+function serializeAll(){
+	s=""
+	for (var i=0; i<equations.length; i++){
+		s+=equations[i].serialize()+'|'
+	}
+	s+='['+[gp.xmin,gp.xmax,gp.ymin,gp.ymax].join(',')+']'
+	return s
+}
+
+function loadState(state){
+	for (var i=0; i<equations.length; i++) equations[i].tile.remove()
+	equations=[]
+	colorIndex=0
+	var v=state.split('|')
+	for (var i=0; i<v.length; i++){
+		if (v[i].length>2 && v[i][0]=='['){
+			var a=v[i].slice(1, -1).split(',')
+			gp.xmin=parseFloat(a[0], 10)
+			gp.xmax=parseFloat(a[1], 10)
+			gp.ymin=parseFloat(a[2], 10)
+			gp.ymax=parseFloat(a[3], 10)
+			$('#xmin').val(gp.xmin)
+			$('#xmax').val(gp.xmax)
+			$('#ymin').val(gp.ymin)
+			$('#ymax').val(gp.ymax)
+		}else if (v[i]) addEquation(v[i])
+	}
+	redraw()
 }
