@@ -131,6 +131,9 @@ function make_parse(){
 	
 	symbol(")");
 
+	symbol("-").nud = function () {
+		return {value:'-', arity:'binary', first:{value:0, arity:'literal'}, second:expression(65)}
+	}
 	
     return function (source) {
         tokens = source.tokens('=<>/+-*%^()xym');

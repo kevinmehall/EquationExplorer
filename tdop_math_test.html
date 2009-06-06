@@ -4,6 +4,35 @@
 <script src='tokens.js'></script>
 <script src='tdop_math.js'></script>
 </head>
+
+<script>
+
+function f(){
+	var v=document.getElementById('input').value
+	try{
+		var expr=parse(v);
+		document.getElementById('out1').innerHTML=to_sexp(expr)
+		document.getElementById('out2').innerHTML=to_js(expr, ['x', 'y'], constants, fns)
+	}catch(e){
+		document.getElementById('out1').innerHTML=document.getElementById('out2').innerHTML='Error: '+ e.message
+	}
+	
+}
+</script>
+
 <body>
+
+<input type='text' id='input' />
+<button onclick='f()'>Parse</button>
+
+<h2>S-expression</h2>
+<pre id='out1'>
+Output displays here
+</pre>
+
+<h2>Javascript</h2>
+<pre id='out2'>
+Output displays here
+</pre>
 </body>
 </html>
