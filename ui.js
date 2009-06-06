@@ -117,7 +117,9 @@ function Equation(eqn){
 		if (equations.length<8) $('#add').show()
 	}
 	
-	$(e.input).keypress(function(){
+	$(e.input).keypress(function(evt){
+		var charCode = (evt.which) ? evt.which : event.keyCode
+		if (charCode<32 && charCode != 8 && charCode != 13) return; // ignore events that do not change input 
 		if (e.timer) clearTimeout(e.timer)
 		e.timer=setTimeout(function(){e.render(); redraw()}, 500)
 		$(e.tile).addClass('active')
