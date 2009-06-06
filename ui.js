@@ -67,6 +67,8 @@ function Equation(eqn){
 			redraw()
 			return false
 		})
+		
+	bindInputToAttr(this.exp_show, this, 'm', function(){ e.render(); redraw() })
 	
 	
 	this.color=getColor()
