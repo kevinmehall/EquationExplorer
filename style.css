@@ -222,11 +222,20 @@ input.exp-show{
 	margin-bottom: 0.7em;
 }
 
+.page a, .page a.visited{
+	color: #999c89;
+}
+
 .page blockquote,.page ul,.page ol,.page dl {
 	margin:1em;
 }
 .page ol,.page ul,.page dl {
 	margin-left:4em;
+}
+
+h1 a{
+	color: inherit;
+	text-decoration:none;
 }
 
 #main-content{

@@ -6,28 +6,31 @@
   </head>
   <body id='eefaq' class='extpage'>
    <div id='main-content' class='page'>
-   	<h1>EquationExplorer</h1>
+   	<h1><a href='index.html'>EquationExplorer</a></h1>
   	<h2>Frequently Asked Questions</h2>
   
   
   	<h3>What can I graph with it?</h3>
-  	<p>Try these implicit equations:</p>
+	  	<p><em>EquationExplorer</em> can graph most algebraic equations, both implicit and explicit.</p>
+	  	<p>Here are a few interesting implicit equations to get you started:</p>
 	  	<ul>
 	  		<li><a href='index.html#x^2+y^2=m^2@5|[-10,10,-10,10]'>Circle</a></li>
 	  		<li><a href='index.html#x^2/m^2 + y^2/2^2=5@3|[-10,10,-10,10]' >Ellipse</a></li>
+	  		<li><a href='index.html#abs(x)^(2^m)+abs(y)^(2^m)=2^(2^m)@2|[-5,5,-5,5]'>Superellipse</a></li>
 	  		<li><a href='index.html#(x^2+y^2+mx)^2=m^2(x^2+y^2)@4|[-10,10,-10,10]' >Cardioid</a></li>
 	  		<li><a href='index.html#(x^2+y^2-5x)^2=m(x^2+y^2)@5|[-10,10,-10,10]' >Limacon</a></li>
 	  		<li><a href='index.html#y^2=x^3-xm@5|[-10,10,-10,10]' >Elliptic Curve</a></li>
 	  		<li><a href='index.html#y^2=x^3+m@1|[-10,10,-10,10]' >Mordell Curve</a></li>
 	  		<li><a href='index.html#(x^2+y^2-1)^3=x^2*y^3|[-2,2,-2,2]' >Heart Curve</a></li>
+	  		<li><a href='index.html#(x^2+y^2)^3=x^2*y^2|[-1,1,-1,1]'>Quadrifolium</a></li>
+	  		<li><a href='index.html#(x^2-1)^2=y^2(3+2y)|[-5,5,-5,5]'>Knot Curve</a></li>
 	  	</ul>
-	  	<p>The above is just a tiny sampling, plus those equations can be tweaked endlessly.</p> 
-	<p>It also supports non-implicit functions, such as:</p>
+		<p>It also supports non-implicit functions, such as:</p>
 		<ul>
-			<li>Linear</li>
-			<li>Parabola</li>
-			<li>Cubic</li>
-			<li>...</li>
+			<li><a href='index.html#y=mx@1|[-10,10,-10,10]'>Linear</a></li>
+			<li><a href='index.html#y=mx^2@1|[-10,10,-10,10]'>Quadratic (Parabola)</a></li>
+			<li><a href='index.html#y=mx^3@1|[-10,10,-10,10]'>Cubic</a></li>
+			<li><a href='index.html#y=x^m@4|[-10,10,-10,10]'>...</a></li>
 		</ul>
 		
 		
@@ -44,22 +47,47 @@
 			<li>abs &mdash; Absolute Value
 			<li>ln &mdash; Natural Logarithm
   		</ul>
+  		
+  	<h3>How can I save a graph as an image?</h3>
+  		<p>Right click on the graph and choose "Save Image As..." (In Firefox). Other browsers may have similar options. </p>
+  	
+  	<h3>What happens when I use the variable <var style='font-variant: normal; font-family:monospace;'>m</var> in an equation?</h3>
+  		<p>Buttons will appear below the input to allow you to adjust the value of <var>m</var>. That value will be substituted back into the equation at each use of the variable. This allows you to easily experiment on how a change to a constant will affect the graph.</p>
+  		<p>For examples of the use of this feature, many of the example equations listed above use this.</p>
   	
   	<h3>Which browsers are supported?</h3>
+	  	<p>This application performs the best in the following browsers:</p>
+	  	<ul>
+	  		<li>Firefox 3.5+</li>
+	  		<li>Google Chrome</li>
+			<li>Safari 4+</li>
+	  	</ul>
+	  	
+	  	<p>These browsers also work, though it may be slow or lack certain features:</p>
+	  	<ul>
+	  		<li>Firefox 3.0+</li>
+	  		<li>Opera</li>
+	  	</ul>
   	
   	<h3>Why isn't Microsoft Internet Explorer supported?</h3>
+  		<p>Internet Explorer does not support the &lt;canvas&gt; element this application uses for its graphing. Additionally, the Javascript engine in IE is much too slow to handle real-time rendering.</p>
+  		<p>Try another browser and you'll have a better experience on this and other sites.</p>
   	
   	<h3>How does it work?</h3>
+  		<p>The basic algorithm EquationExplorer uses for graphing implicit equations is actually very simple:<br/>
+  		First, it rewrites the equation as a subtraction (x^2+y^2=5 becomes x^2+y^2-5=0). It then evaluates that equation at each pixel of the graph, scanning once horizontally and once vertically. It watches for a change of sign in the equation, which means it crossed 0; therefore the equation was true somewhere within that pixel.</p>
+  		
+  		<p>You can read more at <a href='http://blog.kevinmehall.net/2009/equationexplorer'>my blog post about EquationExplorer</a></p>
   	
-  	<h3>Can I re-use the graphing engine elsewhere?</h3>
-  	
-  	
-  	
-  	
-  </div>
-  
+  	<h3>Can I re-use the parser or graphing engine elsewhere?</h3>
+  		<p>The code will be released under an open-source license soon.</p>
+  		
+ 	<h3>Have another question?</h3>
+ 		<p>Post on the <a href='feedback.html'>Feedback page</a></p> 		
+</div>
   <div id='below'>
-  	<h1>EquationExplorer</h1>
+  	<h1><a href='index.html'>EquationExplorer</a></h1>
+  	<div class='links'><a href='index.html' class='first'>Return to Application</a></div>
   	<span id='copyright'>&copy;2009 <a href='http://kevinmehall.net'>Kevin Mehall</a></span>
   </div>
 </body>
