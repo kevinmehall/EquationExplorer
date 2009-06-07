@@ -122,7 +122,7 @@ input.equation{
 	border: none;
 }
 
-.equation-tile a.btn{
+.equation-tile div.btn{
 	width: 24px;
 	height: 24px;
 	border: none;
@@ -130,6 +130,7 @@ input.equation{
 	vertical-align: top;
 	margin:0;
 	text-decoration:none;
+	cursor:pointer;
 }
 
 .visibility{
@@ -144,7 +145,7 @@ input.equation{
 	background: url(vis-spinner.gif) no-repeat center center;
 }
 
-a.remove{
+.remove{
 	background: url(remove.png) no-repeat center center;
 	width: 18px;
 	height:18px;
@@ -158,11 +159,11 @@ a.remove{
 	font-size: small;
 }
 
-a.exp-up{
+.exp-up{
 	background: url(exp-up.png) no-repeat center center;
 }
 
-a.exp-down{
+.exp-down{
 	background: url(exp-down.png) no-repeat center center;
 }
 

@@ -1,6 +1,6 @@
 Array.prototype.remove = function(elem) {  
-	var index = this.indexOf(elem);    
-	if (index !== -1) {this.splice(index, 1);}
+	var index = this.indexOf(elem)
+	if (index !== -1) {this.splice(index, 1)}
 }
 
 function bindInputToAttr(input, o, attr, callback){
@@ -9,8 +9,6 @@ function bindInputToAttr(input, o, attr, callback){
 		callback()
 	})
 }
-
-ctx=null
 
 gp={
 	aa:64.0,
@@ -33,65 +31,74 @@ colors=[
 	[0, 0, 255],
 	[128, 0, 255],
 ]
-colorIndex=0;
+colorIndex=0
 function getColor(){
 	colorIndex=(colorIndex+1)%colors.length
 	return colors[colorIndex]
 }
-tileid=0
 
 function Equation(eqn){
-	var e=this;
-	this.tileid="tile-"+tileid++
-	this.tile=$("<div id='"+this.tileid+"' class='equation-tile'></div>")
-	this.visibilitybtn=$("<a href='#' title='Show/Hide' class='btn visibility'>&nbsp;</a>").appendTo($(this.tile))
-	this.input=$(" <input class='equation' id='equation' type='text' value='' autocomplete='off' />").appendTo($(this.tile))
-	this.removebtn=$("<a href='#' title='Remove' class='btn remove'>&nbsp;</a>").appendTo($(this.tile))
-	
-	this.explorer=$("<div class='explorer'></div>").hide().appendTo($(this.tile))
-	this.exp_down=$("<a href='#' title='Decrease m' class='btn exp-down'>&nbsp;</a>").appendTo(this.explorer)
-		.click(function(){
-			e.m--;
-			e.exp_show.val(e.m)
-			e.render()
-			redraw()
-			return false
-		})
-	$(this.explorer).append(" m=")
-	this.exp_show=$("<input type='text' class='exp-show' value='1'/>").appendTo(this.explorer)
-	this.exp_up=$("<a href='#' title='Increase m' class='btn exp-up'>&nbsp;</a>").appendTo(this.explorer)
-		.click(function(){
-			e.m++;
-			e.exp_show.val(e.m)
-			e.render()
-			redraw()
-			return false
-		})
-		
-	bindInputToAttr(this.exp_show, this, 'm', function(){ e.render(); redraw() })
-	
-	
 	this.color=getColor()
 	this.image=null
 	this.visible=true
 	this.error=false
 	this.m=1
+	var e=this // so we can access `this` in closures where `this` is rebound to the element on which an event fired 
+
 	
-	$(e.removebtn).click(function(){e.pre_remove(); return false})
+	this.tile=$("<div class='equation-tile'></div>")
+		.css('border-color', 'rgb('+this.color[0]+','+this.color[1]+','+this.color[2]+')' )
 	
-	$(e.tile).css('border-color', 'rgb('+this.color[0]+','+this.color[1]+','+this.color[2]+')' )
+	this.visibilitybtn=$("<div title='Show/Hide' class='btn visibility'>&nbsp;</div>")
+		.appendTo(this.tile)
+		.click(function(){
+			e.visible=!e.visible
+			if (e.visible) $(e.tile).removeClass('invisible')
+			else $(e.tile).addClass('invisible')
+			redraw()
+		})
+		
+	this.input=$(" <input class='equation' id='equation' type='text' value='' autocomplete='off' />")
+		.appendTo($(this.tile))
+		.keypress(function(evt){
+			var charCode = (evt.which) ? evt.which : event.keyCode
+			if (charCode<32 && charCode != 8 && charCode != 13) return; // ignore events that do not change input 
+			if (e.timer) clearTimeout(e.timer)
+			e.timer=setTimeout(function(){e.render(); redraw()}, 500)
+			$(e.tile).addClass('active')
+		})
+		
+	this.removebtn=$("<div title='Remove' class='btn remove'>&nbsp;</div>")
+		.appendTo(this.tile)
+		.click(function(){e.pre_remove(); return false})
 	
-	$(e.visibilitybtn).click(function(){
-		e.visible=!e.visible
-		if (e.visible) $(e.tile).removeClass('invisible')
-		else $(e.tile).addClass('invisible')
-		redraw()
-		return false
-	})
+	
+	this.explorer=$("<div class='explorer'></div>")
+		.hide()
+		.appendTo(this.tile)
+		
+	this.exp_down=$("<div title='Decrease m' class='btn exp-down'>&nbsp;</div>")
+		.appendTo(this.explorer)
+		.click(function(){
+			e.set_m(e.m-1)
+		})
+		
+	$(this.explorer).append(" m=")
+	this.exp_show=$("<input type='text' class='exp-show' value='1'/>")
+		.appendTo(this.explorer)
+		.change(function(){
+			e.set_m(parseInt($(e.exp_show).val(), 10))	
+		})
+	
+	this.exp_up=$("<div title='Increase m' class='btn exp-up'>&nbsp;</div>").appendTo(this.explorer)
+		.click(function(){
+			e.set_m(e.m+1)
+		})
+	
 	
 	this.pre_remove=function(){
 		var fade=$(this.tile).clone()
-		var cancel=false;
+		var cancel=false
 		$(this.tile).hide().after(fade)
 		$(fade).empty().addClass('removing').fadeTo(6000, 0.01, function(){
 			if (cancel) return
@@ -100,13 +107,12 @@ function Equation(eqn){
 			})
 			e.remove()
 		})
-		$("<a href='#'>Undo Remove</a>").appendTo($(fade)).click(function(){
-			cancel=true;
+		$("<a href='javascript: return false'>Undo removal</a>").appendTo($(fade)).click(function(){
+			cancel=true
 			equations.push(e)
 			$(fade).remove()
 			$(e.tile).show()
 			redraw()
-			return false;
 		})
 		equations.remove(this)
 		redraw()
@@ -114,21 +120,13 @@ function Equation(eqn){
 	
 	this.remove=function(){
 		$(this.tile).remove()
-		this.e=this.tile=this.visibilitybtn=this.input=this.removebtn=null;
+		this.e=this.tile=this.visibilitybtn=this.input=this.removebtn=null
 		equations.remove(this)
 		if (equations.length<8) $('#add').show()
 	}
 	
-	$(e.input).keypress(function(evt){
-		var charCode = (evt.which) ? evt.which : event.keyCode
-		if (charCode<32 && charCode != 8 && charCode != 13) return; // ignore events that do not change input 
-		if (e.timer) clearTimeout(e.timer)
-		e.timer=setTimeout(function(){e.render(); redraw()}, 500)
-		$(e.tile).addClass('active')
-	})
-	
 	this.render=function(){
-		this.image=null;
+		this.image=null
 		$(e.tile).find('.error').remove()
 		this.error=false
 		var v=this.input.val()
@@ -155,6 +153,13 @@ function Equation(eqn){
 		return this.visible && !this.error
 	}
 	
+	this.set_m=function(val, rd){
+		this.m=val
+		this.exp_show.val(val)
+		this.image=null
+		if (rd!==false) redraw()
+	}
+	
 	this.serialize=function(){
 		s=$(this.input).val()
 		if (s.indexOf('m')!=-1) s+='@'+this.m
@@ -163,33 +168,39 @@ function Equation(eqn){
 	}
 	
 	if (eqn){
-		if (eqn[0]=='!'){ this.visible=false; eqn=eqn.slice(1); $(this.tile).addClass('invisible') }
-		var eqn=eqn.split('@')
-		if (eqn.length>1){this.m=parseInt(eqn[1], 10); $(this.exp_show).val(this.m); $(this.explorer).show()}
+		if (eqn[0]=='!'){
+			this.visible=false
+			eqn=eqn.slice(1)
+			$(this.tile).addClass('invisible')
+		}
+		eqn=eqn.split('@')
+		if (eqn.length>1){
+			this.set_m(parseInt(eqn[1], 10), false)
+		}
 		this.input.val(eqn[0])
 	}
 }
 
 function addEquation(eqn){
-	var e=new Equation(eqn);
-	equations.push(e);
-	$(e.tile).hide();
-	$('#add').before(e.tile);
-	$(e.tile).fadeIn('slow');
+	var e=new Equation(eqn)
+	equations.push(e)
+	$(e.tile).hide()
+	$('#add').before(e.tile)
+	$(e.tile).fadeIn('slow')
 	if (equations.length>=8) $('#add').hide()
-	return false;
+	return false
 }
 
 $(function(){
-	canvas = document.getElementById('canvas');
-	ctx = canvas.getContext('2d');
+	canvas = document.getElementById('canvas')
+	ctx = canvas.getContext('2d')
 	
 	if (ctx.createImageData || ctx.getImageData){
 		$('#wrap').show()
 		$('#browsererror').hide()
-	}else return;
+	}else return
 	
-	$('#add').click(function(){addEquation(); return false});
+	$('#add').click(function(){addEquation(); return false})
 	bindInputToAttr($('#xmin'), gp, 'xmin', redrawAll)
 	bindInputToAttr($('#xmax'), gp, 'xmax', redrawAll)
 	bindInputToAttr($('#ymin'), gp, 'ymin', redrawAll)
@@ -198,8 +209,9 @@ $(function(){
     if (window.location.hash){
 		loadState(decodeURI(window.location.hash.slice(1)))
     }else{
-    	addEquation('x^2+y^2=m^2');
-    	redraw();
+    	addEquation('x^2+y^2=m^2')
+    	equations[0].set_m(5, false)
+    	redraw()
     }
 })
 
