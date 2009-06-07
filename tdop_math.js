@@ -36,10 +36,10 @@ function make_parse(){
 	};
 	
 	var jux_mult=function(left){
-		return {value:'*', arity:'binary', first:left, second:this}
+		return {value:'*', arity:'binary', first:left, second:expression(60, this)}
 	}
 	
-	symbol("(name)", 60).nud = itself;
+	symbol("(name)", 58).nud = itself;
 	symbol("(name)").led=jux_mult;
 	
 	symbol("(literal)", 60).nud = itself;
@@ -77,11 +77,15 @@ function make_parse(){
 	    return token;
 	};
 
-	var expression = function (rbp) {
-	    var left;
-	    var t = token;
-	    advance();
-	    left = t.nud();
+	var expression = function (rbp, first) {
+		var left, t;
+		if (first){
+			left=first.nud()
+		}else{
+	    	t = token;
+	    	advance();
+	   		left = t.nud();
+	   	}
 	    while (rbp < token.lbp) {
 	        t = token;
 	        advance();
@@ -119,7 +123,7 @@ function make_parse(){
 	    return e;
 	}
 	
-	symbol("(", 60).led = function(left){
+	symbol("(", 61).led = function(left){
 		var e = expression(0);
 	    advance(")");
 		if (fns[left.value]){
