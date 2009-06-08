@@ -10,7 +10,9 @@
 	<script src='ui.js'></script>
   </head>
   <body id='eeapp'>
+  	<div id='loading' style='display:none;'><h2>Loading...</h2></div>
    <div id='browsererror' class='page'>
+   	<img src='screenshot.png' width='300' height='208' alt='Screenshot' style='float: right;'/>
   	<h2>Sorry, your browser is not supported!</h2>
   	<p><em>Javascript and HTML5 Canvas are required</em></p>
   	<p>The following browsers are known to work:</p>
@@ -18,7 +20,16 @@
 	  	<li><a href='http://getfirefox.com'>Firefox 3.0+ (3.5+ Recommended)</a></li>
 	  	<li><a href='http://chrome.google.com'>Google Chrome</a></li>
 	  	</ul>
+	  	
+	 <p><a href='faq.html'>See the FAQ</a> for more information on browser support.</p>
   </div>
+  <script>
+  	if (document.createElement('canvas').getContext().getImageData){
+  		document.getElementById('browsererror').style.display='none'
+  		document.getElementById('loading').style.display='block'
+  	}
+  </script>
+  
   <div id='wrap' style='display: none'>
     <canvas id="canvas" width="600" height="600"></canvas>
     
@@ -42,7 +53,6 @@
   	<div class='links'><a href='faq.html' class='first' target='faq_win'>Help</a><a href='feedback.html' target='faq_win'>Feedback</a></div>
   	
   	<span id='copyright'>&copy;2009 <a href='http://kevinmehall.net'>Kevin Mehall</a></span>
-  </div>
-  </body>
+  </div></body>
 </html>
 

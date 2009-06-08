@@ -198,7 +198,12 @@ $(function(){
 	if (ctx.createImageData || ctx.getImageData){
 		$('#wrap').show()
 		$('#browsererror').hide()
-	}else return
+		$('#loading').hide()
+	}else{
+		$('#browsererror').show()
+		$('#loading').hide()
+		return
+	}
 	
 	$('#add').click(function(){addEquation(); return false})
 	bindInputToAttr($('#xmin'), gp, 'xmin', redrawAll)
