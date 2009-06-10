@@ -73,11 +73,7 @@ String.prototype.tokens = function (spliton) {
             c = this.charAt(i);
 
 // number.
-
-// A number cannot start with a decimal point. It must start with a digit,
-// possibly '0'.
-
-        } else if (c >= '0' && c <= '9') {
+        } else if (c=='.' || (c >= '0' && c <= '9')) {
             str = c;
             i += 1;
 
