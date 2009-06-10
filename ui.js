@@ -210,6 +210,8 @@ $(function(){
 	bindInputToAttr($('#xmax'), gp, 'xmax', redrawAll)
 	bindInputToAttr($('#ymin'), gp, 'ymin', redrawAll)
 	bindInputToAttr($('#ymax'), gp, 'ymax', redrawAll)
+	$('#zoom-in').click(function(){zoom(-0.5)})
+	$('#zoom-out').click(function(){zoom(0.5)})
 	
     if (window.location.hash){
 		loadState(decodeURI(window.location.hash.slice(1)))
@@ -243,6 +245,24 @@ function redrawAll(){
     	equations[i].render()
     }
     redraw()
+}
+
+
+function calcScale(scale, val){
+	var v=Math.pow(10, Math.round((Math.log(Math.abs(val))/Math.LN10+scale)*10)/10)
+	return (val<0)?-1*v:v;
+}
+
+function zoom(scale){
+	gp.xmin=calcScale(scale, gp.xmin)
+	gp.xmax=calcScale(scale, gp.xmax)
+	gp.ymin=calcScale(scale, gp.ymin)
+	gp.ymax=calcScale(scale, gp.ymax)
+	redrawAll()
+	$('#xmin').val(gp.xmin)
+	$('#xmax').val(gp.xmax)
+	$('#ymin').val(gp.ymin)
+	$('#ymax').val(gp.ymax)
 }
 
 function serializeAll(){

@@ -107,12 +107,6 @@ h1{
 	z-index: 1;
 }
 
-#window h2{
-	font-size: 12px;
-	font-weight: bold;
-	font-variant: small-caps;
-}
-
 .equation-tile{
 	margin: 6px 6px 6px 15px;
 	border-left: 15px solid red;
@@ -205,6 +199,26 @@ input.exp-show{
 #window label{
 	width: 70px;
 	display: inline-block;
+}
+
+#window h2{
+	font-size: 12px;
+	font-weight: bold;
+	font-variant: small-caps;
+}
+
+#zoombtns{
+	top:18px;
+	position:absolute;
+	right:0;
+	width: 30px;
+}
+
+#zoom-in{
+	background: url(zoom-in.png) center center no-repeat;
+}
+#zoom-out{
+	background: url(zoom-out.png) center center no-repeat;
 }
 
 .page{
