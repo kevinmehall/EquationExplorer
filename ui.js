@@ -23,18 +23,19 @@ equations=[]
 
 colors=[
 	[255, 0, 255],
-	[255, 0, 0],
-	[255, 128, 0],
-	[220, 220, 0],
-	[0, 255, 0],
-	[0, 255, 255],
-	[0, 0, 255],
 	[128, 0, 255],
+	[0, 0, 255],
+	[0, 255, 255],
+	[0, 255, 0],
+	[220, 220, 0],
+	[255, 128, 0],
+	[255, 0, 0],
 ]
-colorIndex=0
 function getColor(){
-	colorIndex=(colorIndex+1)%colors.length
-	return colors[colorIndex]
+	return colors.pop()
+}
+function reuseColor(c){
+	colors.push(c)
 }
 
 function Equation(eqn){
@@ -123,6 +124,7 @@ function Equation(eqn){
 		this.e=this.tile=this.visibilitybtn=this.input=this.removebtn=null
 		equations.remove(this)
 		if (equations.length<8) $('#add').show()
+		reuseColor(this.color)
 	}
 	
 	this.render=function(){
