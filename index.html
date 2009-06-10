@@ -3,15 +3,11 @@
   <head>
     <title>EquationExplorer &mdash; Online graphing calculator supporting implicit equations</title>
     <link rel='stylesheet' href='style.css' /> 
-    <script src='jquery.js'></script>
-    <script src='tokens.js'></script>
-	<script src='tdop_math.js'></script>
-	<script src='graph.js'></script>
-	<script src='ui.js'></script>
   </head>
   <body id='eeapp'>
-  	<div id='loading' style='display:none;'><h2>Loading...</h2></div>
-   <div id='browsererror' class='page'>
+  	<noscript>This page requires Javascript</noscript>
+  	<div id='loading'><h2>Loading...</h2></div>
+   <div id='browsererror' style='display:none;' class='page'>
    	<img src='screenshot.png' width='300' height='208' alt='Screenshot' style='float: right;'/>
   	<h2>Sorry, your browser is not supported!</h2>
   	<p><em>Javascript and HTML5 Canvas are required</em></p>
@@ -24,9 +20,11 @@
 	 <p><a href='faq.html'>See the FAQ</a> for more information on browser support.</p>
   </div>
   <script>
-  	if (document.createElement('canvas').getContext().getImageData){
-  		document.getElementById('browsererror').style.display='none'
-  		document.getElementById('loading').style.display='block'
+  	try{
+  		document.createElement('canvas').getContext('2d').getImageData(0,0,1,1)
+  	}catch(e){
+  		document.getElementById('browsererror').style.display='block'
+  		document.getElementById('loading').style.display='none'
   	}
   </script>
   
@@ -56,14 +54,12 @@
   	
   	<span id='copyright'>&copy;2009 <a href='http://kevinmehall.net'>Kevin Mehall</a></span>
   </div>
-  <script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-var pageTracker = _gat._getTracker("UA-7069941-3");
-pageTracker._trackPageview();
-} catch(err) {}</script>
+  
+<script src='jquery.js'></script>
+<script src='tokens.js'></script>
+<script src='tdop_math.js'></script>
+<script src='graph.js'></script>
+<script src='ui.js'></script>  
+
 </body></html>
 

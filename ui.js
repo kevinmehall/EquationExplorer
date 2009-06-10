@@ -194,6 +194,7 @@ function addEquation(eqn){
 }
 
 $(function(){
+	setTimeout(analytics, 1000)
 	canvas = document.getElementById('canvas')
 	ctx = canvas.getContext('2d')
 	
@@ -295,4 +296,14 @@ function loadState(state){
 		}else if (v[i]) addEquation(v[i])
 	}
 	redraw()
+}
+
+function analytics(){
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	$(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")).appendTo($('body'))
+	setTimeout(
+	function(){
+	var pageTracker = _gat._getTracker("UA-7069941-3");
+	pageTracker._trackPageview();
+	}, 4000)
 }
