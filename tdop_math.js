@@ -1,3 +1,10 @@
+/* (C)2009 Kevin Mehall (http://kevinmehall.net)
+ * Licensed under the terms of the GNU GPLv2 or greater
+ * This file is part of EquationExplorer (http://labs.kevinmehall.net/equationexplorer/
+ */
+
+/* TDOP parser for algebraic equations */
+
 function make_parse(){
 	var symbol_table = {};
 	var token;

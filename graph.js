@@ -1,4 +1,19 @@
-function graph(ctx, gp, f, r, g, b, lw){
+/* (C)2009 Kevin Mehall (http://kevinmehall.net)
+ * Licensed under the terms of the GNU GPLv2 or greater
+ * This file is part of EquationExplorer (http://labs.kevinmehall.net/equationexplorer/
+ */
+
+/* Implicit equation graphing library for HTML5 Canvas */
+
+/* 
+Parameters:
+	gp: graphparams object (see sample near top of ui.js)
+	f: function to graph (JS function compiled to inequality;
+		see compile_to_js_inequality in tdop_math.js)
+	r,g,b: rgb color for line (0-255)
+	lw: line width
+*/
+function graph(gp, f, r, g, b, lw){
 	var width=gp.width;
 	var height=gp.height;
 	var xmin=gp.xmin;
@@ -99,6 +114,7 @@ function graph(ctx, gp, f, r, g, b, lw){
 	return canvas;
 }
 
+/* Draw a grid on the canvas, given a graphparams object */
 function drawGrid(ctx, gp){
 	var xpixstep = (gp.xmax-gp.xmin)/(gp.width)
 	var ypixstep = (gp.ymax-gp.ymin)/(gp.height)

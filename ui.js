@@ -1,3 +1,10 @@
+/* (C)2009 Kevin Mehall (http://kevinmehall.net)
+ * Licensed under the terms of the GNU GPLv2 or greater
+ * This file is part of EquationExplorer (http://labs.kevinmehall.net/equationexplorer/
+ */
+
+/* EquationExplorer user interface */
+
 Array.prototype.remove = function(elem) {  
 	var index = this.indexOf(elem)
 	if (index !== -1) {this.splice(index, 1)}
@@ -146,7 +153,7 @@ function Equation(eqn){
 				this.error=true
 				return
 			}
-        		this.image=graph(ctx, gp, f,this.color[0], this.color[1], this.color[2], 4)
+        		this.image=graph(gp, f,this.color[0], this.color[1], this.color[2], 4)
         	}
     		$(e.tile).removeClass('active')
 	}
@@ -225,7 +232,6 @@ $(function(){
     }
 })
 
-lastHashState=''
 function redraw(){
 	ctx.clearRect(0,0,gp.width,gp.height)
 	drawGrid(ctx, gp)
@@ -237,10 +243,7 @@ function redraw(){
 		}
 	}
 	var v=encodeURI(serializeAll())
-	if (lastHashState.slice(1)!=v){
-		 window.location.hash=v
-	}
-	lastHashState=window.location.hash
+	$('#linkto').attr('href', '#'+v)
 }
 
 function redrawAll(){
@@ -280,7 +283,6 @@ function serializeAll(){
 function loadState(state){
 	for (var i=0; i<equations.length; i++) equations[i].tile.remove()
 	equations=[]
-	colorIndex=0
 	var v=state.split('|')
 	for (var i=0; i<v.length; i++){
 		if (v[i].length>2 && v[i][0]=='['){
