@@ -119,10 +119,10 @@ function make_parse(){
 	infix("^", 70);
 
 	infix("=", 40);
-	infix("<", 40);
-	infix("<=", 40);
-	infix(">", 40);
-	infix(">=", 40);
+	//infix("<", 40);
+	//infix("<=", 40);
+	//infix(">", 40);
+	//infix(">=", 40);
 	
 	symbol("(").nud = function () {
 	    var e = expression(0);
