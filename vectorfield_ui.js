@@ -70,12 +70,10 @@ function draw_vector_field(gp, fn, r, g, b, scale){
 	ctx.lineWidth = 2*(gp.xmax-gp.xmin)/gp.width
 
 
-	console.log('here', (gp.xmax-gp.xmin)/20)
 	for (var x=gp.xmin; x<=gp.xmax; x+= (gp.xmax-gp.xmin)/20){
 		for (var y=gp.ymin; y<=gp.ymax; y+= (gp.ymax-gp.ymin)/20){
 			var pt = fn(x,y)
 			if (!(pt[0] || pt[1])) continue
-			console.log(x,y, pt)
 			ctx.beginPath()
 			ctx.moveTo(x, y)
 			ctx.lineTo(x+pt[0]*scale, y+pt[1]*scale)
@@ -83,11 +81,11 @@ function draw_vector_field(gp, fn, r, g, b, scale){
 			ctx.save()
 			ctx.translate(x+pt[0]*scale, y+pt[1]*scale)
 			ctx.rotate(Math.atan2(pt[1], pt[0]))
-			ctx.scale(0.1, 0.1)
-			ctx.lineWidth/=0.1
-			ctx.moveTo(-2, 1)
+			ctx.scale((gp.xmax-gp.xmin)/gp.width, (gp.xmax-gp.xmin)/gp.width)
+			ctx.lineWidth=2
+			ctx.moveTo(-6, 3)
 			ctx.lineTo(0, 0)
-			ctx.lineTo(-2, -1)
+			ctx.lineTo(-6, -3)
 			ctx.stroke()
 			ctx.restore()
 		}
