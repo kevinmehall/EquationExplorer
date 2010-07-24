@@ -25,6 +25,7 @@ gp={
 	xmax:10,
 	ymin:-10,
 	ymax:10,
+	scale:0.1,
 }
 equations=[]
 
@@ -57,7 +58,7 @@ function compile_vector_function(equation, m){
 	}
 }
 
-function draw_vector_field(gp, fn, r, g, b, scale){
+function draw_vector_field(gp, fn, r, g, b){
 	var canvas=document.createElement('canvas');
 	canvas.width=gp.width;
 	canvas.height=gp.height;
@@ -76,10 +77,10 @@ function draw_vector_field(gp, fn, r, g, b, scale){
 			if (!(pt[0] || pt[1])) continue
 			ctx.beginPath()
 			ctx.moveTo(x, y)
-			ctx.lineTo(x+pt[0]*scale, y+pt[1]*scale)
+			ctx.lineTo(x+pt[0]*gp.scale, y+pt[1]*gp.scale)
 			ctx.stroke()
 			ctx.save()
-			ctx.translate(x+pt[0]*scale, y+pt[1]*scale)
+			ctx.translate(x+pt[0]*gp.scale, y+pt[1]*gp.scale)
 			ctx.rotate(Math.atan2(pt[1], pt[0]))
 			ctx.scale((gp.xmax-gp.xmin)/gp.width, (gp.xmax-gp.xmin)/gp.width)
 			ctx.lineWidth=2
@@ -201,7 +202,7 @@ function Equation(eqn){
 				this.error=true
 				return
 			}
-        		this.image=draw_vector_field(gp, f,this.color[0], this.color[1], this.color[2], 0.1)
+        		this.image=draw_vector_field(gp, f,this.color[0], this.color[1], this.color[2])
         	}
     		$(e.tile).removeClass('active')
 	}
@@ -268,6 +269,7 @@ $(function(){
 	bindInputToAttr($('#xmax'), gp, 'xmax', redrawAll)
 	bindInputToAttr($('#ymin'), gp, 'ymin', redrawAll)
 	bindInputToAttr($('#ymax'), gp, 'ymax', redrawAll)
+	bindInputToAttr($('#scale'), gp, 'scale', redrawAll)
 	$('#zoom-in').click(function(){zoom(-0.5)})
 	$('#zoom-out').click(function(){zoom(0.5)})
 	
