@@ -65,15 +65,21 @@ function Equation(eqn){
 			else $(e.tile).addClass('invisible')
 			redraw()
 		})
-		
+	
 	this.input=$(" <input class='equation' id='equation' type='text' value='' autocomplete='off' />")
 		.appendTo($(this.tile))
-		.keypress(function(evt){
+		.keyup(function(evt){
 			var charCode = (evt.which) ? evt.which : event.keyCode
-			if (charCode<32 && charCode != 8 && charCode != 13) return; // ignore events that do not change input 
-			if (e.timer) clearTimeout(e.timer)
-			e.timer=setTimeout(function(){e.render(); redraw()}, 500)
-			$(e.tile).addClass('active')
+			if (	charCode == 8 // backspace
+			  || (charCode >= 46 && charCode <= 90) // alphanum
+			  || (charCode >= 96 && charCode <= 111) // numpad
+			  || (charCode == 187 || charCode == 189 || charCode == 191) // equals, minus, slash
+			  ){
+				
+				if (e.timer) clearTimeout(e.timer)
+				e.timer=setTimeout(function(){e.render(); redraw()}, 500)
+				$(e.tile).addClass('active')
+			}
 		})
 		
 	this.removebtn=$("<div title='Remove' class='btn remove'>&nbsp;</div>")
