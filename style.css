@@ -290,11 +290,6 @@ h1 a{
 	font-size: 85%;
 }
 
-#modes strong{
-	font-weight: bold;
-	font-size: 110%;
-}
-
 #modes a.current{
 	font-weight: bold;
 	text-decoration: none;
