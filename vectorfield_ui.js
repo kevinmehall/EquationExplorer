@@ -65,10 +65,13 @@ function draw_vector_field(gp, fn, r, g, b){
 	var ctx = canvas.getContext('2d');
 	ctx.strokeStyle='rgb('+r+','+g+','+b+')'
 
+	var xstretch = (gp.xmax-gp.xmin)/gp.width
+	var ystretch = (gp.ymax-gp.ymin)/gp.height
 
-	ctx.scale(gp.width/(gp.xmax-gp.xmin), -1.0*gp.height/(gp.ymax-gp.ymin))
-	ctx.translate(-gp.xmin, gp.ymin)
+	ctx.scale(1.0/xstretch, -1.0/ystretch)
+	ctx.translate(-gp.xmin, -gp.ymax)
 	ctx.lineWidth = 2*(gp.xmax-gp.xmin)/gp.width
+
 
 
 	for (var x=gp.xmin; x<=gp.xmax; x+= (gp.xmax-gp.xmin)/20){
@@ -81,8 +84,8 @@ function draw_vector_field(gp, fn, r, g, b){
 			ctx.stroke()
 			ctx.save()
 			ctx.translate(x+pt[0]*gp.scale, y+pt[1]*gp.scale)
-			ctx.rotate(Math.atan2(pt[1], pt[0]))
-			ctx.scale((gp.xmax-gp.xmin)/gp.width, (gp.xmax-gp.xmin)/gp.width)
+			ctx.scale(xstretch, ystretch)
+			ctx.rotate(Math.atan2(pt[1] * xstretch, pt[0]* ystretch))
 			ctx.lineWidth=2
 			ctx.moveTo(-6, 3)
 			ctx.lineTo(0, 0)
