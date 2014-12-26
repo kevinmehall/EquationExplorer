@@ -49,7 +49,7 @@ function reuseColor(c){
 }
 
 
-function compile_vector_function(equation, m){
+function compile_parametric_function(equation, m){
 	c=Object.create(constants)
 	c.m=m
 	eval('function f(t, i, j){ return ('+
@@ -60,7 +60,7 @@ function compile_vector_function(equation, m){
 	}
 }
 
-function draw_vector_field(gp, fn, r, g, b){
+function draw_parametric_graph(gp, fn, r, g, b){
 	var canvas=document.createElement('canvas');
 	canvas.width=gp.width;
 	canvas.height=gp.height;
@@ -187,7 +187,7 @@ function Equation(eqn){
 		var v=this.input.val()
 		if (this.visible && v.length){
 			try{
-				var f=compile_vector_function(v, this.m)
+				var f=compile_parametric_function(v, this.m)
 				if (v.indexOf('m')!=-1){
 					$(this.explorer).show()
 				}else{
@@ -199,7 +199,7 @@ function Equation(eqn){
 				this.error=true
 				return
 			}
-        		this.image=draw_vector_field(gp, f,this.color[0], this.color[1], this.color[2])
+        		this.image=draw_parametric_graph(gp, f,this.color[0], this.color[1], this.color[2])
         	}
     		$(e.tile).removeClass('active')
 	}
