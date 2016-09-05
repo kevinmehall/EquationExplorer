@@ -129,9 +129,11 @@ function draw_parametric_graph(gp, fn, r, g, b, tmin, tmax){
 
 	ctx.beginPath()
 	console.log('gp',gp)
-	for (var t=tmin; t<=tmax; t+=step){
-		var pt = fn(t)
-		ctx.lineTo(pt[0], pt[1])
+	if(step !== 0){
+		for (var t=tmin; t<=tmax; t+=step){
+			var pt = fn(t)
+			ctx.lineTo(pt[0], pt[1])
+		}
 	}
 	ctx.stroke()
 	return canvas
@@ -478,7 +480,7 @@ function loadState(state){
 			newState += 'i' + '|' + vOld[i];
 		}
 		state = newState;
-		window.location.hash = state;
+		location.hash = state;
 	}
 	
 	var v=state.split('&')
