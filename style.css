@@ -54,6 +54,7 @@ body{
 	left: 0;
 	color: white;
 	background: #46473f;
+	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 }
@@ -176,7 +177,12 @@ input.exp-show{
 	text-align:center;
 }
 
-#add{
+.equation_settings input{
+	width: 30px;
+	border: none;
+}
+
+#add-implicit, #add-vector, #add-parametric{
 	display:block;
 	border:none;
 	text-align: center;

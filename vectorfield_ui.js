@@ -188,7 +188,7 @@ function Equation(eqn){
 		$(this.tile).remove()
 		this.e=this.tile=this.visibilitybtn=this.input=this.removebtn=null
 		equations.remove(this)
-		if (equations.length<8) $('#add').show()
+		if (equations.length<8) $('#add-vector').show()
 		reuseColor(this.color)
 	}
 	
@@ -252,9 +252,9 @@ function addEquation(eqn){
 	var e=new Equation(eqn)
 	equations.push(e)
 	$(e.tile).hide()
-	$('#add').before(e.tile)
+	$('#add-vector').before(e.tile)
 	$(e.tile).fadeIn('slow')
-	if (equations.length>=8) $('#add').hide()
+	if (equations.length>=8) $('#add-vector').hide()
 	return false
 }
 
@@ -273,7 +273,7 @@ $(function(){
 		return
 	}
 	
-	$('#add').click(function(){addEquation(); return false})
+	$('#add-vector').click(function(){addEquation(); return false})
 	bindInputToAttr($('#xmin'), gp, 'xmin', redrawAll)
 	bindInputToAttr($('#xmax'), gp, 'xmax', redrawAll)
 	bindInputToAttr($('#ymin'), gp, 'ymin', redrawAll)
