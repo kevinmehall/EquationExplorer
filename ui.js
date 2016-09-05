@@ -128,7 +128,6 @@ function draw_parametric_graph(gp, fn, r, g, b, tmin, tmax){
 	var step = (tmax-tmin)/10000;
 
 	ctx.beginPath()
-	console.log('gp',gp)
 	if(step !== 0){
 		for (var t=tmin; t<=tmax; t+=step){
 			var pt = fn(t)
@@ -226,7 +225,6 @@ function Equation(eqn, type, window){
 		if (type === 'parametric'){
 			e.tmin = window[0];
 			e.tmax = window[1];
-			console.log(e.tmax);
 			$(this.equation_settings).append("tmin=")
 			this.tmin_input = $("<input type='text' value='"+e.tmin+"'/>")
 				.appendTo(this.equation_settings)
@@ -302,7 +300,6 @@ function Equation(eqn, type, window){
 					this.image = draw_vector_field(gp, fn, this.color[0], this.color[1], this.color[2], this.scale)
 				}else if (type === 'parametric'){
 				var fn = compile_parametric_function(v, this.m)
-				console.log(this.tmin, this.tmax);
 				this.image = draw_parametric_graph(gp, fn, this.color[0], this.color[1], this.color[2], this.tmin, this.tmax)
 				}else {
 					var f=compile_to_js_inequality(v, this.m)
@@ -331,7 +328,6 @@ function Equation(eqn, type, window){
 	}
 	
 	this.serialize = function(){
-		console.log(type);
 		s = type.charAt(0) + '|';
 		if (!this.visible) s += '!';
 		s += $(this.input).val()
@@ -517,7 +513,6 @@ function loadState(state){
 				for(var j = 0; j<window.length;j++){
 					window[j] = parseFloat(window[j]);
 				}
-				console.log(window);
 			}
 			
 			addEquation(x[1], type, window);
