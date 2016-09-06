@@ -151,6 +151,7 @@ function Equation(eqn, type, window){
 	this.error=false
 	this.m=1
 	var e=this // so we can access `this` in closures where `this` is rebound to the element on which an event fired 
+	this.type = type;
 
 	
 	this.tile=$("<div class='equation-tile'></div>")
@@ -277,7 +278,14 @@ function Equation(eqn, type, window){
 		$(this.tile).remove()
 		this.e=this.tile=this.visibilitybtn=this.input=this.removebtn=null
 		equations.remove(this)
-		if (equations.length<8) $('#add').show()
+		if (spaceAvailable() === 1){
+			$('#add-implicit').show();
+		} else if(spaceAvailable() === 2){
+			$('#add-implicit').show();
+			$('#add-vector').show();
+			$('#add-parametric').show();
+		}
+		
 		reuseColor(this.color)
 	}
 	
@@ -355,6 +363,29 @@ function Equation(eqn, type, window){
 	}
 }
 
+var spaceAvailable = function(){ //0 if no space, 1 if space for implicit, 2 if space for any
+	if(equations.length < 5){
+		return 2;
+	}
+	if(equations.length >= 8){
+		return 0;
+	}
+	var numberImplicit = 0;
+	for(var i = 0; i<equations.length; i++){
+		if(equations[i].type === 'implicit'){
+			numberImplicit += 1
+		} 
+	}
+	var spaceIndex = 24 - (equations.length*4 - numberImplicit);
+	if(spaceIndex >= 4){
+		return 2;
+	}
+	if(spaceIndex === 3){
+		return 1;
+	}
+	return 0;
+}
+
 function addEquation(eqn, type, window){
 	if (type === 'vector'){
 		if(vectorExample === true && !eqn){
@@ -379,7 +410,14 @@ function addEquation(eqn, type, window){
 	$(e.tile).hide()
 	$('#add-implicit').before(e.tile)
 	$(e.tile).fadeIn('slow')
-	if (equations.length>=8) $('#add').hide()
+	if (spaceAvailable() === 0){
+		$('#add-implicit').hide();
+		$('#add-vector').hide();
+		$('#add-parametric').hide();
+	} else if(spaceAvailable() === 1){
+		$('#add-vector').hide();
+		$('#add-parametric').hide();
+	}
 	redraw()
 	return false
 }
@@ -428,7 +466,7 @@ function redraw(){
 			if (equations[i].image) ctx.drawImage(equations[i].image, 0, 0, gp.width, gp.height)
 		}
 	}
-	var v=encodeURI(serializeAll())
+	var v = encodeURI(serializeAll())
 	$('#linkto').attr('href', '#'+v)
 }
 
