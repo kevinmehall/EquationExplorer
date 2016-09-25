@@ -41,12 +41,13 @@ colors=[
 
 vectorExample = true
 parametricExample = true
+implicitExample = true
 
 function getColor(){
 	return colors.pop()
 }
 
-//start copied from vector_ui.js
+//Vector
 function compile_vector_function(equation, m){
 	c=Object.create(constants)
 	c.m=m
@@ -96,9 +97,8 @@ function draw_vector_field(gp, fn, r, g, b, scale){
 	}
 	return canvas
 }
-//end copied from vector_ui.js
 
-//start copied from parametric_ui.js
+//Parametric
 function compile_parametric_function(equation, m){
 	c=Object.create(constants)
 	c.m=m
@@ -137,7 +137,7 @@ function draw_parametric_graph(gp, fn, r, g, b, tmin, tmax){
 	ctx.stroke()
 	return canvas
 }
-//end copied from parametric_ui.js
+
 
 
 function reuseColor(c){
@@ -387,6 +387,15 @@ var spaceAvailable = function(){ //0 if no space, 1 if space for implicit, 2 if 
 }
 
 function addEquation(eqn, type, window){
+	if (type === 'implicit'){
+		if(implicitExample === true && !eqn){
+			eqn = 'x^2+y^2=m^2@5'
+			implicitExample = false
+		}
+		if(!window){
+			window = 0.1; // actually the scale
+		}
+	}
 	if (type === 'vector'){
 		if(vectorExample === true && !eqn){
 			eqn = 'xi+yj'
@@ -467,6 +476,7 @@ function redraw(){
 		}
 	}
 	var v = encodeURI(serializeAll())
+	window.location.hash = v;
 	$('#linkto').attr('href', '#'+v)
 }
 
