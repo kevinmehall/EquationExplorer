@@ -278,9 +278,7 @@ function Equation(eqn, type, window){
 		$(this.tile).remove()
 		this.e=this.tile=this.visibilitybtn=this.input=this.removebtn=null
 		equations.remove(this)
-		if (spaceAvailable() === 1){
-			$('#add-implicit').show();
-		} else if(spaceAvailable() === 2){
+		if(spaceAvailable()){
 			$('#add-implicit').show();
 			$('#add-vector').show();
 			$('#add-parametric').show();
@@ -363,12 +361,12 @@ function Equation(eqn, type, window){
 	}
 }
 
-var spaceAvailable = function(){ //0 if no space, 1 if space for implicit, 2 if space for any
+var spaceAvailable = function(){
 	if(equations.length < 5){
-		return 2;
+		return true;
 	}
 	if(equations.length >= 8){
-		return 0;
+		return false;
 	}
 	var numberImplicit = 0;
 	for(var i = 0; i<equations.length; i++){
@@ -378,12 +376,9 @@ var spaceAvailable = function(){ //0 if no space, 1 if space for implicit, 2 if 
 	}
 	var spaceIndex = 24 - (equations.length*4 - numberImplicit);
 	if(spaceIndex >= 4){
-		return 2;
+		return true;
 	}
-	if(spaceIndex === 3){
-		return 1;
-	}
-	return 0;
+	return false;
 }
 
 function addEquation(eqn, type, window){
@@ -419,11 +414,8 @@ function addEquation(eqn, type, window){
 	$(e.tile).hide()
 	$('#add-implicit').before(e.tile)
 	$(e.tile).fadeIn('slow')
-	if (spaceAvailable() === 0){
+	if (spaceAvailable() === false){
 		$('#add-implicit').hide();
-		$('#add-vector').hide();
-		$('#add-parametric').hide();
-	} else if(spaceAvailable() === 1){
 		$('#add-vector').hide();
 		$('#add-parametric').hide();
 	}
@@ -457,7 +449,7 @@ $(function(){
 	$('#zoom-out').click(function(){zoom(0.5)})
 	
     if (window.location.hash){
-		loadState(decodeURI(window.location.hash.slice(1))		)
+		loadState(decodeURI(window.location.hash.slice(1)))
     }else{
     	addEquation('x^2+y^2=m^2', 'implicit')
     	equations[0].set_m(5, false)
