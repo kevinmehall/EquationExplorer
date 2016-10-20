@@ -452,6 +452,7 @@ $(function(){
 		loadState(decodeURI(window.location.hash.slice(1)))
     }else{
     	addEquation('x^2+y^2=m^2', 'implicit')
+    	implicitExample = false;
     	equations[0].set_m(5, false)
     	redraw()
     }
