@@ -11,7 +11,7 @@
   
   
   	<h3>What can I graph with it?</h3>
-	  	<p><em>EquationExplorer</em> can graph most algebraic equations, both implicit and explicit.</p>
+	  	<p>The default "Equation" function of <em>EquationExplorer</em> can graph most algebraic equations, both implicit and explicit.</p>
 	  	<p>Here are a few interesting implicit equations to get you started:</p>
 	  	<ul>
 	  		<li><a href='index.html#x^2+y^2=m^2@5|[-10,10,-10,10]'>Circle</a></li>
@@ -32,7 +32,20 @@
 			<li><a href='index.html#y=mx^3@1|[-10,10,-10,10]'>Cubic</a></li>
 			<li><a href='index.html#y=x^m@4|[-10,10,-10,10]'>...</a></li>
 		</ul>
-		
+		<p>The Vector Field grapher supports most 2-dimensional vector fields, such as:</p>
+		<ul>
+			<li><a href='index.html#[-10,10,-10,10]&v|xi+yj|0.1'>xi+yj</a></li>
+			<li><a href='index.html#[-10,10,-10,10]&v|yi-xj|0.1'>yi-xj</a></li>
+			<li><a href='index.html#[-10,10,-10,10]&v|yi+xj|0.1'>yi+xj</a></li>
+		</ul>
+		<p>The i and j variables are the x and y unit vectors, so the equation 'i+2j' is a vector one unit in the x direction and two units in the y direction.</p>
+		<p>The Parametric grapher graphs parametric equations, with the input a time dependent position vector. Variables i and j are the x and y unit vectors.</p>
+		<p>Here are a few examples:</p>
+		<ul>
+			<li><a href='index.html#[-10,10,-10,10]&p|t(i*sin(t)+j*cos(t))|[0,10]'>Spiral</a></li>
+			<li><a href='index.html#[-10,10,-10,10]&p|i*(t-m*sin(t))+j*(1-m*cos(t))@2|[-10,10]'>Cycloid</a></li>
+			<li><a href='index.html#[-10,10,-10,10]&p|i*8*cos(mt)+j*8*sin(4*t)@3|[0,10]'>Lissajous curve</a></li>
+		</ul>
 		
 	<h3>What special functions can be used in equations?</h3>
   		<ul>
@@ -48,33 +61,15 @@
 			<li>ln &mdash; Natural Logarithm
   		</ul>
   		
+  	<h3>How can I share a graph?</h3>
+  		<p>The URL is unique to each graph and will automatically update as the graph is edited.</p>
+  	
   	<h3>How can I save a graph as an image?</h3>
-  		<p>Right click on the graph and choose "Save Image As..." (In Firefox). Other browsers may have similar options. </p>
+  		<p>Right click on the graph and choose "Save Image As..." in most browsers. </p>
   	
   	<h3>What happens when I use the variable <var style='font-variant: normal; font-family:monospace;'>m</var> in an equation?</h3>
   		<p>Buttons will appear below the input to allow you to adjust the value of <var>m</var>. That value will be substituted back into the equation at each use of the variable. This allows you to easily experiment on how a change to a constant will affect the graph.</p>
   		<p>Many of the example equations listed above use this feature.</p>
-  	
-  	<h3>Which browsers are supported?</h3>
-	  	<p>This application performs the best in the following browsers:</p>
-	  	<ul>
-	  		<li>Firefox 3.5+</li>
-	  		<li>Google Chrome</li>
-			<li>Safari 4+</li>
-	  	</ul>
-	  	
-	  	<p>These browsers also work, though it may be slow or lack certain features:</p>
-	  	<ul>
-	  		<li>Firefox 3.0+</li>
-	  		<li>Opera</li>
-	  	</ul>
-  	
-  	<h3>Why isn't Microsoft Internet Explorer supported?</h3>
-  		<p>Internet Explorer does not support the &lt;canvas&gt; element this application uses for its graphing. Additionally, the Javascript engine in IE is much too slow to handle real-time rendering.</p>
-  		<p>Try another browser and you'll have a better experience on this and other sites.</p>
-  	
-  	<h3>How does it work?</h3>
-  		<p>You can read about the inner workings of EquationExplorer on <a href='http://blog.kevinmehall.net/2009/equationexplorer'>my blog post</a>.</p>
   	
   	<h3 id='gpl'>Can I re-use the parser or graphing engine elsewhere?</h3>
   		<p>The source is released under the GPL and can be found <a href='http://github.com/kevinmehall/EquationExplorer'>on github</a>. Relevant files are:</p>
@@ -92,7 +87,7 @@
   <div id='below'>
   	<h1><a href='index.html'>EquationExplorer</a></h1>
   	<div class='links'><a href='index.html' class='first'>Return to Application</a></div>
-  	<span id='copyright'>&copy;2009 <a href='http://kevinmehall.net'>Kevin Mehall</a></span>
+  	<span id='copyright'>&copy;2016 Keegan Mehall and <a href='http://kevinmehall.net'>Kevin Mehall</a></span>
   </div>
   <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

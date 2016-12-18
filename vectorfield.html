@@ -1,69 +1,30 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <title>Vector Field Online Graphing</title>
-    <link rel='stylesheet' href='style.css' /> 
-  </head>
-  <body id='eeapp'>
-  	<noscript>This page requires Javascript</noscript>
-  	<div id='loading'><h2>Loading...</h2></div>
-   <div id='browsererror' style='display:none;' class='page'>
-   	<img src='screenshot.png' width='300' height='208' alt='Screenshot' style='float: right;'/>
-  	<h2>Sorry, your browser is not supported!</h2>
-  	<p><em>Javascript and HTML5 Canvas are required</em></p>
-  	<p>The following browsers are known to work:</p>
-	  	<ul>
-	  	<li><a href='http://getfirefox.com'>Firefox 3.0+ (3.5+ Recommended)</a></li>
-	  	<li><a href='http://chrome.google.com'>Google Chrome</a></li>
-	  	</ul>
-	  	
-	 <p><a href='faq.html'>See the FAQ</a> for more information on browser support.</p>
-  </div>
-  <script>
-  	try{
-  		document.createElement('canvas').getContext('2d').getImageData(0,0,1,1)
-  	}catch(e){
-  		document.getElementById('browsererror').style.display='block'
-  		document.getElementById('loading').style.display='none'
-  	}
-  </script>
-  
-  <div id='wrap' style='display: none'>
-    <canvas id="canvas" width="600" height="600"></canvas>
-    
-    
-    <div id='side'>
-    	
-    	<a href='#' class='equation-tile add' id='add'>Add Field</a>
-    	
-    	<div id='window' class='equation-tile'>
-    		<h2>Window Settings</h2>
-    			<div><label>xmin = </label><input id='xmin' type='text' value='-10' />
-    			<label>xmax = </label><input id='xmax' type='text' value='10' /></div>
-    			<div><label>ymin = </label><input id='ymin' type='text' value='-10' />
-    			<label>ymax = </label><input id='ymax' type='text' value='10' /></div>
-    			<div><label>scale =</label><input id='scale' type='text' value='0.1' /></div>
-    			<div id='zoombtns'><div class='btn' id='zoom-in'>&nbsp;</div>
-    			<div class='btn' id='zoom-out'>&nbsp;</div></div>
-    	</div>
-  </div>
-  </div>
-  
-  <div id='below'>
-  	<h1>Vector Fields</h1>
-  	<div class='links'><a href='faq.html' class='first' target='faq_win'>Help</a>
-	<a id='linkto' href='#' name="Send this link to give this graph to others">Link to this graph</a>
-	</div>
-	<div id='modes'><a href='index.html'>Implicit</a><a class='current' href='vectorfield.html'>Vector</a><a href='parametric.html'>Parametric</a></div>
-  	
-  	<span id='copyright'>&copy;2010 <a href='http://kevinmehall.net'>Kevin Mehall</a></span>
-  </div>
-  
-<script src='jquery.js'></script>
-<script src='tokens.js'></script>
-<script src='tdop_math.js'></script>
-<script src='graph.js'></script>
-<script src='vectorfield_ui.js'></script>  
 
-</body></html>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+ga('create', 'UA-7069941-3', 'auto');
+ga('send', 'pageview');
+
+
+var translate = function(oldHash){
+	var vOld = oldHash.split('|');
+		var newState = vOld[vOld.length - 1];
+		for(var i = 0; i<vOld.length-1; i++){
+			newState += '&';
+			newState += 'v' + '|' + vOld[i] + '|' + '0.1';
+		}
+		return newState;
+}
+
+if(window.location.hash){
+	window.location.href = 'index.html#'+ translate(decodeURI(window.location.hash.slice(1)));
+} else{
+	window.location.href = 'index.html#[-10,10,-10,10]&v|xi+yj|0.1';
+}
+
+</script>
+</html>

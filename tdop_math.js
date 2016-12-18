@@ -147,7 +147,7 @@ function make_parse(){
 	}
 	
     return function (source) {
-        tokens = source.tokens('=<>/+-*%^()xymt');
+        tokens = source.tokens('=<>/+-*%^()xym');
         token_nr = 0;
         advance();
         var s = expression(0);
