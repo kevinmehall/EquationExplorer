@@ -469,7 +469,7 @@ function redraw(){
 		}
 	}
 	var v = encodeURI(serializeAll())
-	window.location.hash = v;
+	window.location.replace('#' + v);
 	$('#linkto').attr('href', '#'+v)
 }
 
@@ -517,7 +517,7 @@ function loadState(state){
 			newState += 'i' + '|' + vOld[i];
 		}
 		state = newState;
-		location.hash = state;
+		window.location.replace('#' + state);
 	}
 	
 	var v=state.split('&')
