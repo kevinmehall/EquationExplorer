@@ -144,7 +144,7 @@ function reuseColor(c){
 	colors.push(c)
 }
 
-function Equation(eqn, type, window){
+function Equation(eqn, type, win){
 	this.color=getColor()
 	this.image=null
 	this.visible=true
@@ -213,7 +213,7 @@ function Equation(eqn, type, window){
 		this.equation_settings=$("<div class='equation_settings'></div>")
 			.appendTo(this.tile)
 		if (type === 'vector'){
-			e.scale = window;
+			e.scale = win;
 			$(this.equation_settings).append("scale=")
 			this.scale_input = $("<input type='text' value='"+e.scale+"'0.1'/>")
 				.appendTo(this.equation_settings)
@@ -224,8 +224,8 @@ function Equation(eqn, type, window){
 				})
 		}
 		if (type === 'parametric'){
-			e.tmin = window[0];
-			e.tmax = window[1];
+			e.tmin = win[0];
+			e.tmax = win[1];
 			$(this.equation_settings).append("tmin=")
 			this.tmin_input = $("<input type='text' value='"+e.tmin+"'/>")
 				.appendTo(this.equation_settings)
@@ -381,14 +381,14 @@ var spaceAvailable = function(){
 	return false;
 }
 
-function addEquation(eqn, type, window){
+function addEquation(eqn, type, scale){
 	if (type === 'implicit'){
 		if(implicitExample === true && !eqn){
 			eqn = 'x^2+y^2=m^2@5'
 			implicitExample = false
 		}
-		if(!window){
-			window = 0.1; // actually the scale
+		if(!scale){
+			scale = 0.1; // actually the scale
 		}
 	}
 	if (type === 'vector'){
@@ -396,8 +396,8 @@ function addEquation(eqn, type, window){
 			eqn = 'xi+yj'
 			vectorExample = false
 		}
-		if(!window){
-			window = 0.1; // actually the scale
+		if(!scale){
+			scale = 0.1; // actually the scale
 		}
 	}
 	if (type === 'parametric'){
@@ -405,11 +405,11 @@ function addEquation(eqn, type, window){
 			eqn = 't(i*sin(t)+j*cos(t))'
 			parametricExample = false
 		}
-		if(!window){
-			window = [0,10]; //tmin, tmax
+		if(!scale){
+			scale = [0,10]; //tmin, tmax
 		}	
 	}
-	var e=new Equation(eqn, type, window)
+	var e=new Equation(eqn, type, scale)
 	equations.push(e)
 	$(e.tile).hide()
 	$('#add-implicit').before(e.tile)
@@ -539,24 +539,24 @@ function loadState(state){
 	for (var i=1; i<v.length; i++){
 		if (v[i]) {
 			var type;
-			var window;
+			var win;
 			var visible = true;
 			var x = v[i].split('|')
 			if(x[0] === 'i'){
 				type = 'implicit';
-				window = null;
+				win = null;
 			}else if(x[0] === 'v'){
 				type = 'vector';
-				window = parseFloat(x[2]);
+				win = parseFloat(x[2]);
 			}else if(x[0] === 'p'){
 				type = 'parametric';
-				window = x[2].slice(1, -1).split(',');
-				for(var j = 0; j<window.length;j++){
-					window[j] = parseFloat(window[j]);
+				win = x[2].slice(1, -1).split(',');
+				for(var j = 0; j<win.length;j++){
+					win[j] = parseFloat(win[j]);
 				}
 			}
 			
-			addEquation(x[1], type, window);
+			addEquation(x[1], type, win);
 		}
 	}
 	redraw()
